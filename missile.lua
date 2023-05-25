@@ -9,6 +9,8 @@ function Missile:new(x, y, maxSpeed)
     self.velocity = {x = 0, y = 0}
     self.acceleration = 0.2
     self.maxSpeed = maxSpeed
+
+    self._points = {}
     return self
   end
 
@@ -57,6 +59,10 @@ end
 -- Draw method for the Missile class
 function Missile:draw()
     love.graphics.rectangle("fill", self.position.x, self.position.y, 14, 6)
+
+    local point = {self.position.x, self.position.y}
+    table.insert(self._points, point)
+    love.graphics.points(self._points)
 end
 
 return Missile
