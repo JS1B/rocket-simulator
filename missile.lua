@@ -46,8 +46,4 @@ function Missile:draw()
     love.graphics.rectangle("fill", self.x, self.y, 14, 6)
 end
 
-function Missile:fire()
-    ;
-end
-
 return Missile
