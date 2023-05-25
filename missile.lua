@@ -7,10 +7,10 @@ function Missile:new(x, y, maxSpeed)
     Missile.__index = Missile
     self.position = {x = x, y = y}
     self.velocity = {x = 0, y = 0}
-    self.acceleration = 0.2
+    self.acceleration = 0.04
     self.maxSpeed = maxSpeed
 
-    self._points = {}
+    self._points = {{self.position.x, self.position.y}}
     return self
   end
 
@@ -25,13 +25,13 @@ function Missile:update(dt, target_position)
     end
 
     local angle = math.atan2(direction.y, direction.x) - math.atan2(self.velocity.y, self.velocity.x)
-
     if angle > math.pi then
         angle = angle - 2 * math.pi
     elseif angle then
         angle = angle + 2 * math.pi
     end
-    
+  
+    -- Update Missile's velocity
     self.velocity.x = self.velocity.x + direction.x * self.acceleration
     self.velocity.y = self.velocity.y + direction.y * self.acceleration
 
@@ -59,10 +59,11 @@ end
 -- Draw method for the Missile class
 function Missile:draw()
     love.graphics.rectangle("fill", self.position.x, self.position.y, 14, 6)
-
-    local point = {self.position.x, self.position.y}
-    table.insert(self._points, point)
     love.graphics.points(self._points)
+end
+
+function Missile:appendPoint()
+    table.insert(self._points, {self.position.x, self.position.y})
 end
 
 return Missile

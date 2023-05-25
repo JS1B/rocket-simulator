@@ -11,10 +11,18 @@ function love.load()
 end
 
 -- Update function in the LÖVE framework
+
+local lastTime = 0.0
 function love.update(dt)
     -- Update the target's position
     mytarget:update(dt)
     mymissile:update(dt, mytarget.position)
+
+    local curTime = love.timer.getTime()
+    if lastTime + 0.5 < curTime then
+        mymissile:appendPoint()
+        lastTime = curTime
+    end
 end
 
 -- Draw function in the LÖVE framework
@@ -28,6 +36,4 @@ function love.keypressed(key)
     if key == "escape" then
         love.event.quit(0)
     end
-
-    
 end
