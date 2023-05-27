@@ -5,7 +5,7 @@ function Target:new(x, y, speed)
     local self = setmetatable({}, Target)
     Target.__index = Target
     self.position = {x = x, y = y}
-    self.speed = speed
+    self.velocity = {x = speed, y = 0}
     return self
   end
 
@@ -14,7 +14,7 @@ function Target:update(dt)
     -- Calculate the velocity components based on direction and speed
 
     -- Update the target's position based on velocity and time elapsed (dt)
-    self.position.x = self.position.x + self.speed * dt
+    self.position.x = self.position.x + self.velocity.x * dt
 
     -- Wrap position
     if self.position.x > love.graphics.getWidth() then

@@ -7,7 +7,7 @@ function Missile:new(x, y, maxSpeed)
     Missile.__index = Missile
     self.position = {x = x, y = y}
     self.velocity = {x = 0, y = 0}
-    self.acceleration = 0.04
+    self.acceleration = 0.15
     self.maxSpeed = maxSpeed
 
     self._points = {{self.position.x, self.position.y}}
@@ -15,25 +15,44 @@ function Missile:new(x, y, maxSpeed)
   end
 
 -- Update method for the Missile class
-function Missile:update(dt, target_position)
-    local direction = {x = target_position.x - self.position.x, y = target_position.y - self.position.y}
-    local magnitude = math.sqrt(direction.x ^ 2 + direction.y ^ 2)
+function Missile:update(dt, target, algorithm)
+    local LOS_vector = {x = target.position.x - self.position.x, y = target.position.y - self.position.y}
 
-    if magnitude > 0 then
-        direction.x = direction.x / magnitude
-        direction.y = direction.y / magnitude
+    -- Simple Pursuit Guidance
+    if algorithm == "PG" then
+        local distance = math.sqrt(LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
+        local time_to_intercept = distance / self.maxSpeed
+        local predicted_target_position = {
+            x = target.position.x + target.velocity.x * time_to_intercept,
+            y = target.position.y + target.velocity.y * time_to_intercept
+        }
+
+        LOS_vector.x = predicted_target_position.x - self.position.x
+        LOS_vector.y = predicted_target_position.y - self.position.y
+        
+        local magnitude = math.sqrt(LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
+        if magnitude > 0 then
+            LOS_vector.x = LOS_vector.x / magnitude
+            LOS_vector.y = LOS_vector.y / magnitude
+        end
+
+        -- local angle = math.atan2(LOS_vector.y, LOS_vector.x) - math.atan2(self.velocity.y, self.velocity.x)
+        -- if angle > math.pi then
+        --     angle = angle - 2 * math.pi
+        -- elseif angle then
+        --     angle = angle + 2 * math.pi
+        -- end
+
+    -- Proportional Navigation Guidance
+    elseif algorithm == "PN" then
+
+    else
+
     end
 
-    local angle = math.atan2(direction.y, direction.x) - math.atan2(self.velocity.y, self.velocity.x)
-    if angle > math.pi then
-        angle = angle - 2 * math.pi
-    elseif angle then
-        angle = angle + 2 * math.pi
-    end
-  
     -- Update Missile's velocity
-    self.velocity.x = self.velocity.x + direction.x * self.acceleration
-    self.velocity.y = self.velocity.y + direction.y * self.acceleration
+    self.velocity.x = self.velocity.x + LOS_vector.x * self.acceleration
+    self.velocity.y = self.velocity.y + LOS_vector.y * self.acceleration
 
     -- Cap at max speed
     local speed = (self.velocity.x ^ 2 + self.velocity.y ^ 2) ^ 0.5
