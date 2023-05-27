@@ -45,15 +45,6 @@ function Missile:update(dt, target_position)
     -- Update the Missile's position based on velocity and time elapsed (dt)
     self.position.x = self.position.x + self.velocity.x * dt
     self.position.y = self.position.y + self.velocity.y * dt
-
-    -- Wrap position
-    if self.position.x > love.graphics.getWidth() then
-        self.position.x = 0
-    end
-
-    if self.position.y > love.graphics.getHeight() then
-        self.position.y = 0
-    end
 end
 
 -- Draw method for the Missile class
