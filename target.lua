@@ -15,6 +15,7 @@ function Target:update(dt)
 
     -- Update the target's position based on velocity and time elapsed (dt)
     self.position.x = self.position.x + self.velocity.x * dt
+    self.position.y = self.position.y + self.velocity.y * dt
 
     -- Wrap position
     if self.position.x > love.graphics.getWidth() then

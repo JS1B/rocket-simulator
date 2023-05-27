@@ -7,7 +7,7 @@ function Missile:new(x, y, maxSpeed)
     Missile.__index = Missile
     self.position = {x = x, y = y}
     self.velocity = {x = 0, y = 0}
-    self.acceleration = 0.15
+    self.acceleration = 0.25
     self.maxSpeed = maxSpeed
 
     self._points = {{self.position.x, self.position.y}}
@@ -36,6 +36,10 @@ function Missile:update(dt, target, algorithm)
             LOS_vector.y = LOS_vector.y / magnitude
         end
 
+        -- Update Missile's velocity
+        self.velocity.x = self.velocity.x + LOS_vector.x * self.acceleration
+        self.velocity.y = self.velocity.y + LOS_vector.y * self.acceleration
+
         -- local angle = math.atan2(LOS_vector.y, LOS_vector.x) - math.atan2(self.velocity.y, self.velocity.x)
         -- if angle > math.pi then
         --     angle = angle - 2 * math.pi
@@ -45,17 +49,23 @@ function Missile:update(dt, target, algorithm)
 
     -- Proportional Navigation Guidance
     elseif algorithm == "PN" then
+        local los_rate = (LOS_vector.x * target.velocity.y -
+            LOS_vector.y * target.velocity.x) /
+            (LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
+        local acceleration_vector = {
+            x = self.acceleration * los_rate * LOS_vector.x,
+            y = self.acceleration * los_rate * LOS_vector.y
+        }
+
+        self.velocity.x = self.velocity.x + acceleration_vector.x
+        self.velocity.y = self.velocity.y + acceleration_vector.y
 
     else
-
+        print("Wrong algorithm selected")
     end
 
-    -- Update Missile's velocity
-    self.velocity.x = self.velocity.x + LOS_vector.x * self.acceleration
-    self.velocity.y = self.velocity.y + LOS_vector.y * self.acceleration
-
     -- Cap at max speed
-    local speed = (self.velocity.x ^ 2 + self.velocity.y ^ 2) ^ 0.5
+    local speed = math.sqrt(self.velocity.x ^ 2 + self.velocity.y ^ 2)
     if speed > self.maxSpeed then
         self.velocity.x = self.velocity.x * self.maxSpeed / speed
         self.velocity.y = self.velocity.y * self.maxSpeed / speed
