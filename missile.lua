@@ -11,16 +11,17 @@ function Missile:new(x, y, maxSpeed)
     self.maxSpeed = maxSpeed
 
     self._points = {{self.position.x, self.position.y}}
+    self._lastTime = 0.0
     return self
   end
 
 -- Update method for the Missile class
 function Missile:update(dt, target, algorithm)
     local LOS_vector = {x = target.position.x - self.position.x, y = target.position.y - self.position.y}
+    local distance = math.sqrt(LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
 
     -- Simple Pursuit Guidance
     if algorithm == "PG" then
-        local distance = math.sqrt(LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
         local time_to_intercept = distance / self.maxSpeed
         local predicted_target_position = {
             x = target.position.x + target.velocity.x * time_to_intercept,
@@ -74,6 +75,14 @@ function Missile:update(dt, target, algorithm)
     -- Update the Missile's position based on velocity and time elapsed (dt)
     self.position.x = self.position.x + self.velocity.x * dt
     self.position.y = self.position.y + self.velocity.y * dt
+
+    -- Trigger points/dots draw
+    local curTime = love.timer.getTime()
+    if self._lastTime + 0.5 < curTime then
+        self:appendPoint()
+        self._lastTime = curTime
+    end
+
 end
 
 -- Draw method for the Missile class
