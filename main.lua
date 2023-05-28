@@ -9,7 +9,7 @@ function love.load()
 
     -- Create new instances
     mytarget = Target:new(10, 50, 25)
-    missiles = {Missile:new(20, love.graphics.getHeight()-10, 80)}
+    missiles = { Missile:new(20, love.graphics.getHeight() - 10, 80) }
 end
 
 -- Update function in the LÖVE framework
@@ -19,10 +19,9 @@ function love.update(dt)
     for _, missile in pairs(missiles) do
         missile:update(dt, mytarget, "PN") -- PN PG
     end
-
 end
 
--- Draw function in the LÖVE framework
+-- Draw function in the LÖVE frameworks
 function love.draw()
     -- Draw the target
     mytarget:draw()
@@ -45,6 +44,6 @@ function love.keypressed(key)
         mytarget.velocity.x = mytarget.velocity.x + speed
     elseif key == "space" then
         table.remove(missiles, 1)
-        table.insert(missiles, Missile:new(20, love.graphics.getHeight()-10, 80))
+        table.insert(missiles, Missile:new(20, love.graphics.getHeight() - 10, 80))
     end
 end

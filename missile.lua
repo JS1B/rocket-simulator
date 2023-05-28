@@ -5,19 +5,19 @@ function Missile:new(x, y, maxSpeed)
     -- Define the Missile class
     local self = setmetatable({}, Missile)
     Missile.__index = Missile
-    self.position = {x = x, y = y}
-    self.velocity = {x = 0, y = 0}
-    self.acceleration = 0.25
+    self.position = { x = x, y = y }
+    self.velocity = { x = 0, y = 0 }
+    self.acceleration = 1
     self.maxSpeed = maxSpeed
 
-    self._points = {{self.position.x, self.position.y}}
+    self._points = { { self.position.x, self.position.y } }
     self._lastTime = 0.0
     return self
-  end
+end
 
 -- Update method for the Missile class
 function Missile:update(dt, target, algorithm)
-    local LOS_vector = {x = target.position.x - self.position.x, y = target.position.y - self.position.y}
+    local LOS_vector = { x = target.position.x - self.position.x, y = target.position.y - self.position.y }
     local distance = math.sqrt(LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
 
     -- Simple Pursuit Guidance
@@ -30,7 +30,7 @@ function Missile:update(dt, target, algorithm)
 
         LOS_vector.x = predicted_target_position.x - self.position.x
         LOS_vector.y = predicted_target_position.y - self.position.y
-        
+
         local magnitude = math.sqrt(LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
         if magnitude > 0 then
             LOS_vector.x = LOS_vector.x / magnitude
@@ -38,8 +38,8 @@ function Missile:update(dt, target, algorithm)
         end
 
         -- Update Missile's velocity
-        self.velocity.x = self.velocity.x + LOS_vector.x * self.acceleration
-        self.velocity.y = self.velocity.y + LOS_vector.y * self.acceleration
+        self.velocity.x = self.velocity.x + LOS_vector.x * self.acceleration * dt
+        self.velocity.y = self.velocity.y + LOS_vector.y * self.acceleration * dt
 
         -- local angle = math.atan2(LOS_vector.y, LOS_vector.x) - math.atan2(self.velocity.y, self.velocity.x)
         -- if angle > math.pi then
@@ -48,19 +48,18 @@ function Missile:update(dt, target, algorithm)
         --     angle = angle + 2 * math.pi
         -- end
 
-    -- Proportional Navigation Guidance
+        -- Proportional Navigation Guidance
     elseif algorithm == "PN" then
         local los_rate = (LOS_vector.x * target.velocity.y -
-            LOS_vector.y * target.velocity.x) /
+                LOS_vector.y * target.velocity.x) /
             (LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
         local acceleration_vector = {
             x = self.acceleration * los_rate * LOS_vector.x,
             y = self.acceleration * los_rate * LOS_vector.y
         }
 
-        self.velocity.x = self.velocity.x + acceleration_vector.x
-        self.velocity.y = self.velocity.y + acceleration_vector.y
-
+        self.velocity.x = self.velocity.x + acceleration_vector.x * dt
+        self.velocity.y = self.velocity.y + acceleration_vector.y * dt
     else
         print("Wrong algorithm selected")
     end
@@ -82,7 +81,6 @@ function Missile:update(dt, target, algorithm)
         self:appendPoint()
         self._lastTime = curTime
     end
-
 end
 
 -- Draw method for the Missile class
@@ -92,7 +90,7 @@ function Missile:draw()
 end
 
 function Missile:appendPoint()
-    table.insert(self._points, {self.position.x, self.position.y})
+    table.insert(self._points, { self.position.x, self.position.y })
 end
 
 return Missile

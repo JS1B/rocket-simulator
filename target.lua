@@ -4,10 +4,10 @@ local Target = {}
 function Target:new(x, y, speed)
     local self = setmetatable({}, Target)
     Target.__index = Target
-    self.position = {x = x, y = y}
-    self.velocity = {x = speed, y = 0}
+    self.position = { x = x, y = y }
+    self.velocity = { x = speed, y = 0 }
     return self
-  end
+end
 
 -- Update method for the Target class
 function Target:update(dt)
