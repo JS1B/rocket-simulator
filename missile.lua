@@ -7,6 +7,7 @@ function Missile:new(x, y, maxSpeed)
     Missile.__index = Missile
     self.position = { x = x, y = y }
     self.velocity = { x = 0, y = 0 }
+    self.speed = 0
     self.acceleration = 1
     self.maxSpeed = maxSpeed
 
@@ -65,11 +66,12 @@ function Missile:update(dt, target, algorithm)
     end
 
     -- Cap at max speed
-    local speed = math.sqrt(self.velocity.x ^ 2 + self.velocity.y ^ 2)
-    if speed > self.maxSpeed then
-        self.velocity.x = self.velocity.x * self.maxSpeed / speed
-        self.velocity.y = self.velocity.y * self.maxSpeed / speed
+    self.speed = math.sqrt(self.velocity.x ^ 2 + self.velocity.y ^ 2)
+    if self.speed > self.maxSpeed then
+        self.velocity.x = self.velocity.x * self.maxSpeed / self.speed
+        self.velocity.y = self.velocity.y * self.maxSpeed / self.speed
     end
+    self.speed = math.sqrt(self.velocity.x ^ 2 + self.velocity.y ^ 2)
 
     -- Update the Missile's position based on velocity and time elapsed (dt)
     self.position.x = self.position.x + self.velocity.x * dt
