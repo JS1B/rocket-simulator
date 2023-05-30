@@ -25,8 +25,8 @@ function Missile:update(dt, target, algorithm)
     if algorithm == "PG" then
         local time_to_intercept = distance / self.maxSpeed
         local predicted_target_position = {
-            x = target.position.x + target.velocity.x * time_to_intercept,
-            y = target.position.y + target.velocity.y * time_to_intercept
+            x = target.position.x + target._velocity.x * time_to_intercept,
+            y = target.position.y + target._velocity.y * time_to_intercept
         }
 
         LOS_vector.x = predicted_target_position.x - self.position.x
@@ -51,8 +51,8 @@ function Missile:update(dt, target, algorithm)
 
         -- Proportional Navigation Guidance
     elseif algorithm == "PN" then
-        local los_rate = (LOS_vector.x * target.velocity.y -
-                LOS_vector.y * target.velocity.x) /
+        local los_rate = (LOS_vector.x * target._velocity.y -
+                LOS_vector.y * target._velocity.x) /
             (LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
         local acceleration_vector = {
             x = self.acceleration * los_rate * LOS_vector.x,

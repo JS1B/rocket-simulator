@@ -25,6 +25,20 @@ function love.update(dt)
         missile:update(dt, mytarget, "PN") -- PN PG
     end
 
+    local dspeed = 15
+    if love.keyboard.isDown("w") then
+        mytarget.speed = mytarget.speed + dspeed * dt
+    elseif love.keyboard.isDown("s") then
+        mytarget.speed = mytarget.speed - dspeed * dt
+    end
+
+    local dangle = 2
+    if love.keyboard.isDown("a") then
+        mytarget.angle = mytarget.angle - dangle * dt
+    elseif love.keyboard.isDown("d") then
+        mytarget.angle = mytarget.angle + dangle * dt
+    end
+
     -- Print UI with details
     local buf = ""
     local UI_width = 140
@@ -32,7 +46,9 @@ function love.update(dt)
     suit.Label("Target", {align="left"}, suit.layout:row(UI_width, love.graphics.getFont():getHeight()))
     buf = ("x: %7.1f\ty: %7.1f"):format(mytarget.position.x, mytarget.position.y)
     suit.Label(buf, {align="left"}, suit.layout:row())
-    buf = ("v.x: %7.1f\tv.y: %7.1f"):format(mytarget.velocity.x, mytarget.velocity.y)
+    buf = ("v.x: %7.1f\tv.y: %7.1f"):format(mytarget._velocity.x, mytarget._velocity.y)
+    suit.Label(buf, {align="left"}, suit.layout:row())
+    buf = ("angle: %4.2f\tsp:%4.2f"):format(mytarget.angle, mytarget.speed)
     suit.Label(buf, {align="left"}, suit.layout:row())
 
     for i, missile in ipairs(missiles) do
@@ -60,18 +76,18 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    suit.keypressed(key)
-    local speed = 10
+    local dd = 0.1
+    local dspeed = 10
     if key == "escape" then
         love.event.quit()
-    elseif key == "w" then
-        mytarget.velocity.y = mytarget.velocity.y - speed
-    elseif key == "s" then
-        mytarget.velocity.y = mytarget.velocity.y + speed
-    elseif key == "a" then
-        mytarget.velocity.x = mytarget.velocity.x - speed
-    elseif key == "d" then
-        mytarget.velocity.x = mytarget.velocity.x + speed
+    -- elseif key == "w" then
+    --     mytarget.speed = mytarget.speed + dspeed
+    -- elseif key == "s" then
+    --     mytarget.speed = mytarget.speed - dspeed
+    -- elseif key == "a" then
+    --     mytarget.angle = mytarget.angle - dd
+    -- elseif key == "d" then
+    --     mytarget.angle = mytarget.angle + dd
     elseif key == "space" then
         table.remove(missiles, 1)
         table.insert(missiles, Missile:new(20, love.graphics.getHeight() - 10, 80))
