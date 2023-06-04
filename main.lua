@@ -22,7 +22,7 @@ function love.update(dt)
 
     -- Update every missile position
     for _, missile in pairs(missiles) do
-        missile:update(dt, mytarget, "PN") -- PN PG
+        missile:update(dt, mytarget, "PG") -- PN PG
     end
 
     local dspeed = 15
@@ -48,7 +48,7 @@ function love.update(dt)
     suit.Label(buf, {align="left"}, suit.layout:row())
     buf = ("v.x: %7.1f\tv.y: %7.1f"):format(mytarget._velocity.x, mytarget._velocity.y)
     suit.Label(buf, {align="left"}, suit.layout:row())
-    buf = ("angle: %4.2f\tsp:%4.2f"):format(mytarget.angle, mytarget.speed)
+    buf = ("angle: %4.2f\tsp: %4.2f"):format(mytarget.angle, mytarget.speed)
     suit.Label(buf, {align="left"}, suit.layout:row())
 
     for i, missile in ipairs(missiles) do
