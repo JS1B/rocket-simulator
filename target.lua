@@ -20,15 +20,6 @@ function Target:update(dt)
     self._velocity.y = math.sin(self.angle) * self.speed
     self.position.x = self.position.x + self._velocity.x * dt
     self.position.y = self.position.y + self._velocity.y * dt
-
-    -- Wrap position
-    if self.position.x > love.graphics.getWidth() then
-        self.position.x = 0
-    end
-
-    if self.position.y > love.graphics.getHeight() then
-        self.position.y = 0
-    end
 end
 
 -- Draw method for the Target class
