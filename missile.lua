@@ -1,15 +1,16 @@
 local Missile = {}
 
 -- Constructor for the Missile class
-function Missile:new(x, y, maxSpeed)
+function Missile:new(x, y, maxSpeed, acc, turnSpeed)
     -- Define the Missile class
     local self = setmetatable({}, Missile)
     Missile.__index = Missile
     self.position = { x = x, y = y }
     self.velocity = { x = 0, y = 0 }
     self.speed = 0
-    self.acceleration = 1
+    self.acceleration = acc
     self.maxSpeed = maxSpeed
+    self.turnSpeed = turnSpeed
 
     self._points = { { self.position.x, self.position.y } }
     self._lastTime = 0.0
@@ -63,6 +64,7 @@ function Missile:update(dt, target, algorithm)
         self.velocity.y = self.velocity.y + acceleration_vector.y * dt
     else
         print("Wrong algorithm selected")
+        print(algorithm)
     end
 
     -- Cap at max speed

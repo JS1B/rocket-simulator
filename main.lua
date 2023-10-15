@@ -1,6 +1,7 @@
 local Target = require "target"
 local Missile = require "missile"
 local suit = require "SUIT"
+local configInfo = require "config"
 
 -- Load function in the LÖVE framework
 function love.load()
@@ -8,8 +9,14 @@ function love.load()
     love.window.setTitle("Rocket simulator")
 
     -- Create new instances
-    mytarget = Target:new(10, 50, 25)
-    missiles = { Missile:new(20, love.graphics.getHeight() - 10, 80) }
+    mytarget = Target:new(10,
+                50,
+                configInfo.target.maxSpeed)
+    missiles = { Missile:new(20,
+                love.graphics.getHeight() - 10,
+                configInfo.rocket.maxSpeed,
+                configInfo.rocket.acceleration,
+                configInfo.rocket.turnSpeed) }
 
     font = love.graphics.newFont("assets/fonts/NotoSans-Regular.ttf", 13)
     love.graphics.setFont(font)
@@ -22,7 +29,7 @@ function love.update(dt)
 
     -- Update every missile position
     for _, missile in pairs(missiles) do
-        missile:update(dt, mytarget, "PG") -- PN PG
+        missile:update(dt, mytarget, configInfo.rocket.movType)
     end
 
     local dspeed = 15
@@ -90,6 +97,10 @@ function love.keypressed(key)
     --     mytarget.angle = mytarget.angle + dd
     elseif key == "space" then
         table.remove(missiles, 1)
-        table.insert(missiles, Missile:new(20, love.graphics.getHeight() - 10, 80))
+        table.insert(missiles, Missile:new(20,
+                                    love.graphics.getHeight() - 10,
+                                    configInfo.rocket.maxSpeed,
+                                    configInfo.rocket.acceleration,
+                                    configInfo.rocket.turnSpeed))
     end
 end
