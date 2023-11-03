@@ -1,7 +1,14 @@
-local Target = require "target"
-local Missile = require "missile"
-local suit = require "SUIT"
-local configInfo = require "config"
+local Target = require("target")
+local Missile = require("missile")
+local suit = require("SUIT")
+
+-- Attempt to load the local configuration
+local success, config = pcall(require, "config")
+
+-- If the local configuration failed to load, use the default configuration
+if not success then
+    config = require("default-config")
+end
 
 -- Load function in the LÖVE framework
 function love.load()
@@ -9,14 +16,8 @@ function love.load()
     love.window.setTitle("Rocket simulator")
 
     -- Create new instances
-    mytarget = Target:new(10,
-                50,
-                configInfo.target.maxSpeed)
-    missiles = { Missile:new(20,
-                love.graphics.getHeight() - 10,
-                configInfo.rocket.maxSpeed,
-                configInfo.rocket.acceleration,
-                configInfo.rocket.turnSpeed) }
+    mytarget = Target:new(config.target)
+    missiles = { Missile:new(config.missile) }
 
     font = love.graphics.newFont("assets/fonts/NotoSans-Regular.ttf", 13)
     love.graphics.setFont(font)
@@ -29,22 +30,24 @@ function love.update(dt)
 
     -- Update every missile position
     for _, missile in pairs(missiles) do
-        missile:update(dt, mytarget, configInfo.rocket.movType)
+        missile:update(dt, mytarget)
     end
 
-    local dspeed = 15
+    local accDirection = 0 -- No acceleration
     if love.keyboard.isDown("w") then
-        mytarget.speed = mytarget.speed + dspeed * dt
+        accDirection = -1 -- Slow down
     elseif love.keyboard.isDown("s") then
-        mytarget.speed = mytarget.speed - dspeed * dt
+        accDirection = 1 -- Accelerate
     end
+    mytarget:accelerate(dt, accDirection)
 
-    local dangle = 2
+    local turnDirection = 0 -- No turn
     if love.keyboard.isDown("a") then
-        mytarget.angle = mytarget.angle - dangle * dt
+        turnDirection = -1 -- Left
     elseif love.keyboard.isDown("d") then
-        mytarget.angle = mytarget.angle + dangle * dt
+        turnDirection = 1 -- Right
     end
+    mytarget:turn(dt, turnDirection)
 
     -- Print UI with details
     local buf = ""
@@ -62,7 +65,7 @@ function love.update(dt)
         suit.Label("Missile " .. i, {align="left"}, suit.layout:row())
         buf = ("x: %7.1f\ty: %7.1f"):format(missile.position.x, missile.position.y)
         suit.Label(buf, {align="left"}, suit.layout:row())
-        buf = ("v.x: %7.1f\tv.y: %7.1f"):format(missile.velocity.x, missile.velocity.y)
+        buf = ("v.x: %7.1f\tv.y: %7.1f"):format(missile._velocity.x, missile._velocity.y)
         suit.Label(buf, {align="left"}, suit.layout:row())
         suit.Label(("speed: %7.1f"):format(missile.speed), {align="left"}, suit.layout:row())
     end
@@ -83,24 +86,11 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    local dd = 0.1
-    local dspeed = 10
     if key == "escape" then
         love.event.quit()
-    -- elseif key == "w" then
-    --     mytarget.speed = mytarget.speed + dspeed
-    -- elseif key == "s" then
-    --     mytarget.speed = mytarget.speed - dspeed
-    -- elseif key == "a" then
-    --     mytarget.angle = mytarget.angle - dd
-    -- elseif key == "d" then
-    --     mytarget.angle = mytarget.angle + dd
+
     elseif key == "space" then
         table.remove(missiles, 1)
-        table.insert(missiles, Missile:new(20,
-                                    love.graphics.getHeight() - 10,
-                                    configInfo.rocket.maxSpeed,
-                                    configInfo.rocket.acceleration,
-                                    configInfo.rocket.turnSpeed))
+        table.insert(missiles, Missile:new(config.missile))
     end
 end

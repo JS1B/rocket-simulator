@@ -1,29 +1,35 @@
 local Missile = {}
 
 -- Constructor for the Missile class
-function Missile:new(x, y, maxSpeed, acc, turnSpeed)
+function Missile:new(config)
     -- Define the Missile class
     local self = setmetatable({}, Missile)
     Missile.__index = Missile
-    self.position = { x = x, y = y }
-    self.velocity = { x = 0, y = 0 }
-    self.speed = 0
-    self.acceleration = acc
-    self.maxSpeed = maxSpeed
-    self.turnSpeed = turnSpeed
+    self.position = { x = config.x, y = config.y }
 
+    self.speed = config.speed
+    self.maxSpeed = config.maxSpeed
+    
+    self.turnSpeed = config.turnSpeed
+
+    self.acceleration = config.acceleration
+
+    self.algorithm = config.algorithm
+
+    -- private variables
+    self._velocity = { x = 0, y = 0 }
     self._points = { { self.position.x, self.position.y } }
     self._lastTime = 0.0
     return self
 end
 
 -- Update method for the Missile class
-function Missile:update(dt, target, algorithm)
+function Missile:update(dt, target)
     local LOS_vector = { x = target.position.x - self.position.x, y = target.position.y - self.position.y }
     local distance = math.sqrt(LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
 
     -- Simple Pursuit Guidance
-    if algorithm == "PG" then
+    if self.algorithm == "PG" then
         local time_to_intercept = distance / self.maxSpeed
         local predicted_target_position = {
             x = target.position.x + target._velocity.x * time_to_intercept,
@@ -40,10 +46,10 @@ function Missile:update(dt, target, algorithm)
         end
 
         -- Update Missile's velocity
-        self.velocity.x = self.velocity.x + LOS_vector.x * self.acceleration * dt
-        self.velocity.y = self.velocity.y + LOS_vector.y * self.acceleration * dt
+        self._velocity.x = self._velocity.x + LOS_vector.x * self.acceleration * dt
+        self._velocity.y = self._velocity.y + LOS_vector.y * self.acceleration * dt
 
-        -- local angle = math.atan2(LOS_vector.y, LOS_vector.x) - math.atan2(self.velocity.y, self.velocity.x)
+        -- local angle = math.atan2(LOS_vector.y, LOS_vector.x) - math.atan2(self._velocity.y, self._velocity.x)
         -- if angle > math.pi then
         --     angle = angle - 2 * math.pi
         -- elseif angle then
@@ -51,7 +57,7 @@ function Missile:update(dt, target, algorithm)
         -- end
 
         -- Proportional Navigation Guidance
-    elseif algorithm == "PN" then
+    elseif self.algorithm == "PN" then
         local los_rate = (LOS_vector.x * target._velocity.y -
                 LOS_vector.y * target._velocity.x) /
             (LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
@@ -60,24 +66,23 @@ function Missile:update(dt, target, algorithm)
             y = self.acceleration * los_rate * LOS_vector.y
         }
 
-        self.velocity.x = self.velocity.x + acceleration_vector.x * dt
-        self.velocity.y = self.velocity.y + acceleration_vector.y * dt
+        self._velocity.x = self._velocity.x + acceleration_vector.x * dt
+        self._velocity.y = self._velocity.y + acceleration_vector.y * dt
     else
-        print("Wrong algorithm selected")
-        print(algorithm)
+        print("Wrong algorithm selected: ", self.algorithm)
     end
 
     -- Cap at max speed
-    self.speed = math.sqrt(self.velocity.x ^ 2 + self.velocity.y ^ 2)
+    self.speed = math.sqrt(self._velocity.x ^ 2 + self._velocity.y ^ 2)
     if self.speed > self.maxSpeed then
-        self.velocity.x = self.velocity.x * self.maxSpeed / self.speed
-        self.velocity.y = self.velocity.y * self.maxSpeed / self.speed
+        self._velocity.x = self._velocity.x * self.maxSpeed / self.speed
+        self._velocity.y = self._velocity.y * self.maxSpeed / self.speed
     end
-    self.speed = math.sqrt(self.velocity.x ^ 2 + self.velocity.y ^ 2)
+    self.speed = math.sqrt(self._velocity.x ^ 2 + self._velocity.y ^ 2)
 
     -- Update the Missile's position based on velocity and time elapsed (dt)
-    self.position.x = self.position.x + self.velocity.x * dt
-    self.position.y = self.position.y + self.velocity.y * dt
+    self.position.x = self.position.x + self._velocity.x * dt
+    self.position.y = self.position.y + self._velocity.y * dt
 
     -- Trigger points/dots draw
     local curTime = love.timer.getTime()

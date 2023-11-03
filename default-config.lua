@@ -1,0 +1,30 @@
+-- Define the movement configuration for both rocket and target
+local cfg = {
+    missile = {
+        x = 10, -- The initial x position of the rocket
+        y = 300, -- The initial y position of the rocket
+
+        acceleration = 1, -- The acceleration of the rocket
+
+        speed = 0, -- The initial speed of the rocket
+        maxSpeed = 80, -- The maximum speed of the rocket
+
+        turnSpeed = 5, -- The turning speed of the rocket
+
+        algorithm = "PN" -- The movement type of the rocket
+    },
+    target = {
+        x = 10, -- The initial x position of the target
+        y = 20, -- The initial y position of the target
+
+        acceleration = 0.5, -- The acceleration of the target
+
+        speed = 5, -- The initial speed of the target
+        maxSpeed = 50, -- The maximum speed of the target
+
+        turnSpeed = 2 -- The turning speed of the target
+    }
+}
+
+-- Export the movement configuration
+return cfg
