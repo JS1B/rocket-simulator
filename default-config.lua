@@ -10,8 +10,9 @@ local cfg = {
         maxSpeed = 80, -- The maximum speed of the rocket
 
         turnSpeed = 5, -- The turning speed of the rocket
-
-        algorithm = "PN" -- The movement type of the rocket
+        
+        algorithms = { "PG", "PN" }, -- The algorithms that the rocket can use
+        algorithm = "PG" -- The algorithm that the rocket will use
     },
     target = {
         x = 10, -- The initial x position of the target
