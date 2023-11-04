@@ -20,6 +20,7 @@ function SuitUI:update(dt, target, missiles)
     self.suit.layout:reset(love.graphics.getWidth() - self.UI_width, 60, 2)
     self:displayTargetInfo(target)
     self:displayMissileInfo(missiles)
+    self:displayFPS(dt)
 end
 
 function SuitUI:displayTargetInfo(target)
@@ -41,6 +42,10 @@ function SuitUI:displayMissileInfo(missiles)
         self.suit.Label(buf, {align="left"}, self.suit.layout:row())
         self.suit.Label(("speed: %7.1f"):format(missile.speed), {align="left"}, self.suit.layout:row())
     end
+end
+
+function SuitUI:displayFPS(dt)
+    self.suit.Label("FPS: " .. love.timer.getFPS(), {align="right"}, self.suit.layout:row())
 end
 
 function SuitUI:draw()
