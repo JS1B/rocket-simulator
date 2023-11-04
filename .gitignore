@@ -1,6 +1,6 @@
 lua*/
-love*/
 .vscode/
 logs/
+build/
 TODOS.md
 config.lua
