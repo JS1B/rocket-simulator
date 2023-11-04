@@ -11,8 +11,8 @@ local defaultConfig = require("default-config")
 -- Create a local override table
 local localConfig = {
     missile = {
-        y = 500, -- Adjust the initial y position of the missile
-        algorithm = defaultConfig.algorithms[2], -- Adjust the algorithm used by the missile
+        y = 400, -- Adjust the initial y position of the missile
+        algorithm = defaultConfig.missile.algorithms[2], -- Adjust the algorithm used by the missile
         -- You can override other missile parameters here
     },
     target = {
@@ -23,7 +23,9 @@ local localConfig = {
 
 -- Merge the default and local configurations, giving local overrides precedence
 for category, categoryConfig in pairs(localConfig) do
+    print(" merging category: ", category)
     for key, value in pairs(categoryConfig) do
+        print("  merging key: ", key)
         defaultConfig[category][key] = value
     end
 end
