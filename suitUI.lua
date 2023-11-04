@@ -1,4 +1,4 @@
-local Suit = require("suit")
+local Suit = require("lib/suit")
 
 SuitUI = {}
 
