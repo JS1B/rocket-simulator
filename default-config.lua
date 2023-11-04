@@ -24,6 +24,11 @@ local cfg = {
         maxSpeed = 50, -- The maximum speed of the target
 
         turnSpeed = 2 -- The turning speed of the target
+    },
+    ui = {
+        width = 140, -- The width of the UI
+        font = "assets/fonts/NotoSans-Regular.ttf", -- The font used by the UI
+        fontSize = 13 -- The font size used by the UI
     }
 }
 

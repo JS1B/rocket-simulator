@@ -1,6 +1,6 @@
 local Target = require("target")
 local Missile = require("missile")
-local suit = require("SUIT")
+local UI = require("suitUI")
 
 -- Attempt to load the local configuration
 local success, config = pcall(require, "config")
@@ -18,9 +18,7 @@ function love.load()
     -- Create new instances
     mytarget = Target:new(config.target)
     missiles = { Missile:new(config.missile) }
-
-    font = love.graphics.newFont("assets/fonts/NotoSans-Regular.ttf", 13)
-    love.graphics.setFont(font)
+    ui = UI:new(config.ui)
 end
 
 -- Update function in the LÖVE framework
@@ -49,26 +47,7 @@ function love.update(dt)
     end
     mytarget:turn(dt, turnDirection)
 
-    -- Print UI with details
-    local buf = ""
-    local UI_width = 140
-	suit.layout:reset(love.graphics.getWidth() - UI_width, 60, 2)
-    suit.Label("Target", {align="left"}, suit.layout:row(UI_width, love.graphics.getFont():getHeight()))
-    buf = ("x: %7.1f\ty: %7.1f"):format(mytarget.position.x, mytarget.position.y)
-    suit.Label(buf, {align="left"}, suit.layout:row())
-    buf = ("v.x: %7.1f\tv.y: %7.1f"):format(mytarget._velocity.x, mytarget._velocity.y)
-    suit.Label(buf, {align="left"}, suit.layout:row())
-    buf = ("angle: %4.2f\tsp: %4.2f"):format(mytarget.angle, mytarget.speed)
-    suit.Label(buf, {align="left"}, suit.layout:row())
-
-    for i, missile in ipairs(missiles) do
-        suit.Label("Missile " .. i, {align="left"}, suit.layout:row())
-        buf = ("x: %7.1f\ty: %7.1f"):format(missile.position.x, missile.position.y)
-        suit.Label(buf, {align="left"}, suit.layout:row())
-        buf = ("v.x: %7.1f\tv.y: %7.1f"):format(missile._velocity.x, missile._velocity.y)
-        suit.Label(buf, {align="left"}, suit.layout:row())
-        suit.Label(("speed: %7.1f"):format(missile.speed), {align="left"}, suit.layout:row())
-    end
+    ui:update(dt, mytarget, missiles)
 end
 
 -- Draw function in the LÖVE frameworks
@@ -82,7 +61,7 @@ function love.draw()
     end
 
     -- draw the gui
-	suit.draw()
+	ui:draw()
 end
 
 function love.keypressed(key)
