@@ -1,6 +1,4 @@
-lua*/
 .vscode/
 logs/
 build/
-TODOS.md
 config.lua
