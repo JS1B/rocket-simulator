@@ -1,5 +1,3 @@
-local Suit = require("lib/suit")
-
 SuitUI = {}
 
 function SuitUI:new(config)
@@ -9,9 +7,8 @@ function SuitUI:new(config)
 
     self.UI_width = config.width
 
-    self.suit = Suit --.new()
+    self.suit = require("lib/suit")
     self.font = love.graphics.newFont(config.font, config.fontSize)
-    -- self.suit.theme.font = self.font
     love.graphics.setFont(self.font)
     return self
 end
@@ -20,7 +17,7 @@ function SuitUI:update(dt, target, missiles)
     self.suit.layout:reset(love.graphics.getWidth() - self.UI_width, 60, 2)
     self:displayTargetInfo(target)
     self:displayMissileInfo(missiles)
-    self:displayFPS(dt)
+    self:displayFPS()
 end
 
 function SuitUI:displayTargetInfo(target)
@@ -36,7 +33,7 @@ end
 function SuitUI:displayMissileInfo(missiles)
     for i, missile in ipairs(missiles) do
         self.suit.Label("Missile " .. i, {align="left"}, self.suit.layout:row())
-        buf = ("x: %7.1f\ty: %7.1f"):format(missile.position.x, missile.position.y)
+        local buf = ("x: %7.1f\ty: %7.1f"):format(missile.position.x, missile.position.y)
         self.suit.Label(buf, {align="left"}, self.suit.layout:row())
         buf = ("v.x: %7.1f\tv.y: %7.1f"):format(missile._velocity.x, missile._velocity.y)
         self.suit.Label(buf, {align="left"}, self.suit.layout:row())
@@ -44,7 +41,7 @@ function SuitUI:displayMissileInfo(missiles)
     end
 end
 
-function SuitUI:displayFPS(dt)
+function SuitUI:displayFPS()
     self.suit.Label("FPS: " .. love.timer.getFPS(), {align="right"}, self.suit.layout:row())
 end
 

@@ -1,12 +1,18 @@
+local Target
+local Missile
+local UI
+local config
+
 -- Load function in the LÖVE framework
 function love.load()
-    local Target = require("target")
-    local Missile = require("missile")
-    local UI = require("suitUI")
+    Target = require("target")
+    Missile = require("missile")
+    UI = require("suitUI")
 
     -- Attempt to load the local configuration
     print("Loading local configuration...")
-    local success, config = pcall(require, "config")
+    local success
+    success, config = pcall(require, "config")
     print("Local configuration loaded: ", success)
 
     -- If the local configuration failed to load, use the default configuration
