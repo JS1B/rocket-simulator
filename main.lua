@@ -1,21 +1,25 @@
-local Target = require("target")
-local Missile = require("missile")
-local UI = require("suitUI")
-
--- Attempt to load the local configuration
-print("Loading local configuration...")
-local success, config = pcall(require, "config")
-print("Local configuration loaded: ", success)
-
--- If the local configuration failed to load, use the default configuration
-if not success then
-    config = require("default-config")
-end
-
 -- Load function in the LÖVE framework
 function love.load()
+    local Target = require("target")
+    local Missile = require("missile")
+    local UI = require("suitUI")
+
+    -- Attempt to load the local configuration
+    print("Loading local configuration...")
+    local success, config = pcall(require, "config")
+    print("Local configuration loaded: ", success)
+
+    -- If the local configuration failed to load, use the default configuration
+    if not success then
+        config = require("default-config")
+    end
+
+    -- Set the window properties
     love.graphics.setBackgroundColor(20 / 255, 20 / 255, 20 / 255, 0)
     love.window.setTitle("Rocket simulator")
+    love.window.setMode(config.window.width, config.window.height)
+    love.window.setIcon(love.image.newImageData(config.window.icon))
+    love.mouse.setVisible(config.window.mouseVisible)
 
     -- Create new instances
     target = Target:new(config.target)
@@ -35,17 +39,17 @@ function love.update(dt)
 
     local accDirection = 0 -- No acceleration
     if love.keyboard.isDown("w") then
-        accDirection = -1 -- Slow down
+        accDirection = -1  -- Slow down
     elseif love.keyboard.isDown("s") then
-        accDirection = 1 -- Accelerate
+        accDirection = 1   -- Accelerate
     end
     target:accelerate(dt, accDirection)
 
     local turnDirection = 0 -- No turn
     if love.keyboard.isDown("a") then
-        turnDirection = -1 -- Left
+        turnDirection = -1  -- Left
     elseif love.keyboard.isDown("d") then
-        turnDirection = 1 -- Right
+        turnDirection = 1   -- Right
     end
     target:turn(dt, turnDirection)
 
@@ -63,13 +67,12 @@ function love.draw()
     end
 
     -- draw the gui
-	ui:draw()
+    ui:draw()
 end
 
 function love.keypressed(key)
     if key == "escape" then
         love.event.quit()
-
     elseif key == "space" then
         table.remove(missiles, 1)
         table.insert(missiles, Missile:new(config.missile))

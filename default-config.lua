@@ -29,6 +29,12 @@ local cfg = {
         width = 140, -- The width of the UI
         font = "assets/fonts/NotoSans-Regular.ttf", -- The font used by the UI
         fontSize = 13 -- The font size used by the UI
+    },
+    window = {
+        width = 800, -- The width of the window
+        height = 600, -- The height of the window
+        icon = "assets/images/rocket.png", -- The icon of the window
+        mouseVisible = true -- Whether the mouse is visible or not
     }
 }
 
