@@ -18,7 +18,7 @@ function love.load()
     love.window.setTitle("Rocket simulator")
 
     -- Create new instances
-    mytarget = Target:new(config.target)
+    target = Target:new(config.target)
     missiles = { Missile:new(config.missile) }
     ui = UI:new(config.ui)
 end
@@ -26,11 +26,11 @@ end
 -- Update function in the LÖVE framework
 function love.update(dt)
     -- Update the target's position
-    mytarget:update(dt)
+    target:update(dt)
 
     -- Update every missile position
     for _, missile in pairs(missiles) do
-        missile:update(dt, mytarget)
+        missile:update(dt, target)
     end
 
     local accDirection = 0 -- No acceleration
@@ -39,7 +39,7 @@ function love.update(dt)
     elseif love.keyboard.isDown("s") then
         accDirection = 1 -- Accelerate
     end
-    mytarget:accelerate(dt, accDirection)
+    target:accelerate(dt, accDirection)
 
     local turnDirection = 0 -- No turn
     if love.keyboard.isDown("a") then
@@ -47,15 +47,15 @@ function love.update(dt)
     elseif love.keyboard.isDown("d") then
         turnDirection = 1 -- Right
     end
-    mytarget:turn(dt, turnDirection)
+    target:turn(dt, turnDirection)
 
-    ui:update(dt, mytarget, missiles)
+    ui:update(dt, target, missiles)
 end
 
 -- Draw function in the LÖVE frameworks
 function love.draw()
     -- Draw the target
-    mytarget:draw()
+    target:draw()
 
     -- Draw all the missiles
     for _, missile in pairs(missiles) do
