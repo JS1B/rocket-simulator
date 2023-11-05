@@ -5,18 +5,19 @@ function Missile:new(config)
     -- Define the Missile class
     local self = setmetatable({}, Missile)
     Missile.__index = Missile
+
     self.position = { x = config.x, y = config.y }
 
     self.speed = config.speed
     self.maxSpeed = config.maxSpeed
-    
+
     self.turnSpeed = config.turnSpeed
 
     self.acceleration = config.acceleration
 
     self.algorithm = config.algorithm
 
-    -- private variables
+    -- Private variables
     self._velocity = { x = 0, y = 0 }
     self._points = { { self.position.x, self.position.y } }
     self._lastTime = 0.0

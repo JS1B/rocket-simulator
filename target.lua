@@ -4,6 +4,7 @@ local Target = {}
 function Target:new(config)
     local self = setmetatable({}, Target)
     Target.__index = Target
+
     self.position = { x = config.x, y = config.y }
     self.angle = 0 -- radians
 
@@ -14,7 +15,7 @@ function Target:new(config)
 
     self.acceleration = config.acceleration
 
-    -- private variables
+    -- Private variables
     self._velocity = { x = 0, y = 0 }
     return self
 end
@@ -36,8 +37,7 @@ end
 
 -- Update method for the Target class
 function Target:update(dt)
-    -- Calculate the velocity components based on direction and speed
-    -- Update the target's position based on velocity and time elapsed (dt)
+    -- Calculate the velocity and position components
     self._velocity.x = math.cos(self.angle) * self.speed
     self._velocity.y = math.sin(self.angle) * self.speed
     self.position.x = self.position.x + self._velocity.x * dt

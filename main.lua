@@ -35,14 +35,6 @@ end
 
 -- Update function in the LÖVE framework
 function love.update(dt)
-    -- Update the target's position
-    target:update(dt)
-
-    -- Update every missile position
-    for _, missile in pairs(missiles) do
-        missile:update(dt, target)
-    end
-
     local accDirection = 0 -- No acceleration
     if love.keyboard.isDown("w") then
         accDirection = -1  -- Slow down
@@ -59,20 +51,19 @@ function love.update(dt)
     end
     target:turn(dt, turnDirection)
 
+    target:update(dt)
+    for _, missile in pairs(missiles) do
+        missile:update(dt, target)
+    end
     ui:update(dt, target, missiles)
 end
 
 -- Draw function in the LÖVE frameworks
 function love.draw()
-    -- Draw the target
     target:draw()
-
-    -- Draw all the missiles
     for _, missile in pairs(missiles) do
         missile:draw()
     end
-
-    -- draw the gui
     ui:draw()
 end
 
@@ -80,7 +71,7 @@ function love.keypressed(key)
     if key == "escape" then
         love.event.quit()
     elseif key == "space" then
-        table.remove(missiles, 1)
+        table.remove(missiles, 1) -- Comment this line to allow multiple missiles
         table.insert(missiles, Missile:new(config.missile))
     end
 end
