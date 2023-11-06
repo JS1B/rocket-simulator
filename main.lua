@@ -24,8 +24,14 @@ function love.load()
     love.graphics.setBackgroundColor(20 / 255, 20 / 255, 20 / 255, 0)
     love.window.setTitle("Rocket simulator")
     love.window.setMode(config.window.width, config.window.height)
-    love.window.setIcon(love.image.newImageData(config.window.icon))
     love.mouse.setVisible(config.window.mouseVisible)
+
+    local success, imageData = pcall(love.image.newImageData, config.window.icon)
+    if success then
+        love.window.setIcon(imageData)
+    else
+        print("Failed to load window icon: " .. imageData)  -- imageData contains the error message
+    end
 
     -- Create new instances
     target = Target:new(config.target)
