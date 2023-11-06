@@ -42,17 +42,17 @@ end
 -- Update function in the LÖVE framework
 function love.update(dt)
     local accDirection = 0 -- No acceleration
-    if love.keyboard.isDown("w") then
+    if love.keyboard.isDown(config.controls.decelerate) then
         accDirection = -1  -- Slow down
-    elseif love.keyboard.isDown("s") then
+    elseif love.keyboard.isDown(config.controls.accelerate) then
         accDirection = 1   -- Accelerate
     end
     target:accelerate(dt, accDirection)
 
     local turnDirection = 0 -- No turn
-    if love.keyboard.isDown("a") then
+    if love.keyboard.isDown(config.controls.left) then
         turnDirection = -1  -- Left
-    elseif love.keyboard.isDown("d") then
+    elseif love.keyboard.isDown(config.controls.right) then
         turnDirection = 1   -- Right
     end
     target:turn(dt, turnDirection)
@@ -74,10 +74,23 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == "escape" then
+    if key == config.controls.exit then
         love.event.quit()
-    elseif key == "space" then
-        table.remove(missiles, 1) -- Comment this line to allow multiple missiles
-        table.insert(missiles, Missile:new(config.missile))
+        return
     end
+    if key == config.controls.reset then
+        target:reset()
+        for _, missile in pairs(missiles) do
+            missile:reset()
+        end
+    end
+    if key == config.controls.changeAlgorithm then
+        for _, missile in pairs(missiles) do
+            missile:changeAlgorithm()
+        end
+    end
+    -- if key == "space" then
+    --     table.remove(missiles, 1) -- Comment this line to allow multiple missiles
+    --     table.insert(missiles, Missile:new(config.missile))
+    -- end
 end

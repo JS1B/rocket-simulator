@@ -103,4 +103,14 @@ function Missile:appendPoint()
     table.insert(self._points, { self.position.x, self.position.y })
 end
 
+function Missile:changeAlgorithm()
+    -- Roll over the algorithms
+    print("TODO: Implement Missile:changeAlgorithm()")
+end
+
+-- Reset method for the Missile class
+function Missile:reset()
+    print("TODO: Implement Missile:reset()")
+end
+
 return Missile

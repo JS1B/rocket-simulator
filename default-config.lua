@@ -35,6 +35,15 @@ local cfg = {
         height = 600,                      -- The height of the window
         icon = "assets/images/rocket.png", -- The icon of the window
         mouseVisible = true                -- Whether the mouse is visible or not
+    },
+    controls = {
+        accelerate = "w", -- The key used to accelerate
+        decelerate = "s", -- The key used to decelerate
+        left = "a",       -- The key used to turn left
+        right = "d",       -- The key used to turn right
+        reset = "r",       -- The key used to reset the simulation
+        changeAlgorithm = "space", -- The key used to change the algorithm
+        exit = "escape"    -- The key used to exit the simulation
     }
 }
 

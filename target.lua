@@ -49,4 +49,9 @@ function Target:draw()
     love.graphics.rectangle("fill", self.position.x, self.position.y, 14, 6)
 end
 
+-- Reset method for the Target class
+function Target:reset()
+    print("TODO: Implement Target:reset()")
+end
+
 return Target
