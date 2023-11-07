@@ -33,7 +33,7 @@ end
 
 function SuitUI:displayMissileInfo(missiles)
     for i, missile in ipairs(missiles) do
-        self.suit.Label("Missile " .. i, { align = "left" }, self.suit.layout:row())
+        self.suit.Label(("Missile %d - %s"):format(i, missile.algorithm), { align = "left" }, self.suit.layout:row())
         local buf = ("x: %7.1f\ty: %7.1f"):format(missile.position.x, missile.position.y)
         self.suit.Label(buf, { align = "left" }, self.suit.layout:row())
         buf = ("v.x: %7.1f\tv.y: %7.1f"):format(missile._velocity.x, missile._velocity.y)

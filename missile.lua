@@ -27,6 +27,7 @@ end
 
 -- Update method for the Missile class
 function Missile:update(dt, target)
+    -- Calculate the Line Of Sight (LOS) vector
     local LOS_vector = { x = target.position.x - self.position.x, y = target.position.y - self.position.y }
     local distance = math.sqrt(LOS_vector.x ^ 2 + LOS_vector.y ^ 2)
 
@@ -35,6 +36,7 @@ function Missile:update(dt, target)
     if algorithm then
         algorithm(self, LOS_vector, target, distance, dt)
     else
+        self.algorithm = next(self.algorithms)
         print("Wrong algorithm selected: ", self.algorithm)
     end
 
@@ -46,7 +48,7 @@ function Missile:update(dt, target)
     end
     self.speed = math.sqrt(self._velocity.x ^ 2 + self._velocity.y ^ 2)
 
-    -- Update the Missile's position based on velocity and time elapsed (dt)
+    -- Update the Missile's position
     self.position.x = self.position.x + self._velocity.x * dt
     self.position.y = self.position.y + self._velocity.y * dt
 
@@ -70,7 +72,10 @@ end
 
 function Missile:changeAlgorithm()
     -- Roll over the algorithms
-    print("TODO: Implement Missile:changeAlgorithm()")
+    self.algorithm = next(self.algorithms, self.algorithm)
+    if not self.algorithm then
+        self.algorithm = next(self.algorithms)
+    end
 end
 
 -- Reset method for the Missile class
