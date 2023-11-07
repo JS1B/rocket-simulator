@@ -11,7 +11,6 @@ local cfg = {
 
         turnSpeed = 5,               -- The turning speed of the rocket
 
-        algorithms = { "PG", "PN" }, -- The algorithms that the rocket can use
         algorithm = "PG"             -- The algorithm that the rocket will use
     },
     target = {
