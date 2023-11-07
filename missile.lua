@@ -20,8 +20,15 @@ function Missile:new(config)
 
     -- Private variables
     self._velocity = { x = 0, y = 0 }
-    self._points = { { self.position.x, self.position.y } }
-    self._lastTime = 0.0
+    self.trace = {
+        enabled = config.trace,
+        length = config.traceLength,
+        color = config.traceColor, -- TODO: Implement color
+        frequency = config.traceFrequency,
+        _lastTime = love.timer.getTime(),
+        _points = { { self.position.x, self.position.y } }
+    }
+
     return self
 end
 
@@ -52,22 +59,32 @@ function Missile:update(dt, target)
     self.position.x = self.position.x + self._velocity.x * dt
     self.position.y = self.position.y + self._velocity.y * dt
 
-    -- Trigger points/dots draw
-    local curTime = love.timer.getTime()
-    if self._lastTime + 0.5 < curTime then
-        self:appendPoint()
-        self._lastTime = curTime
-    end
+    self:triggerPointsDraw()
 end
 
 -- Draw method for the Missile class
 function Missile:draw()
     love.graphics.rectangle("fill", self.position.x, self.position.y, 14, 6)
-    love.graphics.points(self._points)
+    if self.trace.enabled then
+        love.graphics.points(self.trace._points)
+    end
+end
+
+function Missile:triggerPointsDraw()
+    if self.trace.enabled then
+        local currentTime = love.timer.getTime()
+        if currentTime - self.trace._lastTime > self.trace.frequency then
+            self.trace._lastTime = currentTime
+            self:appendPoint()
+            if #self.trace._points > self.trace.length then
+                table.remove(self.trace._points, 1)
+            end
+        end
+    end
 end
 
 function Missile:appendPoint()
-    table.insert(self._points, { self.position.x, self.position.y })
+    table.insert(self.trace._points, { self.position.x, self.position.y })
 end
 
 function Missile:changeAlgorithm()

@@ -1,17 +1,22 @@
 -- Define the movement configuration for both rocket and target
 local cfg = {
     missile = {
-        x = 10,                      -- The initial x position of the rocket
-        y = 300,                     -- The initial y position of the rocket
+        x = 10,                        -- The initial x position of the rocket
+        y = 300,                       -- The initial y position of the rocket
 
-        acceleration = 1,            -- The acceleration of the rocket
+        acceleration = 1,              -- The acceleration of the rocket
 
-        speed = 0,                   -- The initial speed of the rocket
-        maxSpeed = 80,               -- The maximum speed of the rocket
+        speed = 0,                     -- The initial speed of the rocket
+        maxSpeed = 80,                 -- The maximum speed of the rocket
 
-        turnSpeed = 5,               -- The turning speed of the rocket
+        turnSpeed = 5,                 -- The turning speed of the rocket
 
-        algorithm = "PG"             -- The algorithm that the rocket will use
+        algorithm = "PG",              -- The algorithm that the rocket will use
+
+        trace = true,                  -- Whether the rocket will leave a trace or not
+        traceLength = 100,             -- The length of the trace
+        traceColor = { 1, 1, 1, 0.5 }, -- The color of the trace
+        traceFrequency = 0.5           -- The frequency of the trace in seconds
     },
     target = {
         x = 10,             -- The initial x position of the target
@@ -36,13 +41,13 @@ local cfg = {
         mouseVisible = true                -- Whether the mouse is visible or not
     },
     controls = {
-        accelerate = "w", -- The key used to accelerate
-        decelerate = "s", -- The key used to decelerate
-        left = "a",       -- The key used to turn left
-        right = "d",       -- The key used to turn right
-        reset = "r",       -- The key used to reset the simulation
+        accelerate = "w",          -- The key used to accelerate
+        decelerate = "s",          -- The key used to decelerate
+        left = "a",                -- The key used to turn left
+        right = "d",               -- The key used to turn right
+        reset = "r",               -- The key used to reset the simulation
         changeAlgorithm = "space", -- The key used to change the algorithm
-        exit = "escape"    -- The key used to exit the simulation
+        exit = "escape"            -- The key used to exit the simulation
     }
 }
 
