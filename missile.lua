@@ -23,11 +23,12 @@ function Missile:new(config)
     self.trace = {
         enabled = config.trace,
         length = config.traceLength,
-        color = config.traceColor, -- TODO: Implement color
+        color = config.traceColor,
         frequency = config.traceFrequency,
         _lastTime = love.timer.getTime(),
-        _points = { { self.position.x, self.position.y } }
+        _points = { }
     }
+    self:appendPoint()
 
     return self
 end
@@ -84,7 +85,7 @@ function Missile:triggerPointsDraw()
 end
 
 function Missile:appendPoint()
-    table.insert(self.trace._points, { self.position.x, self.position.y })
+    table.insert(self.trace._points, { self.position.x, self.position.y, unpack(self.trace.color) })
 end
 
 function Missile:changeAlgorithm()
