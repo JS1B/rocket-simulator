@@ -52,26 +52,25 @@ local cfg = {
 }
 
 -- Attempt to load the local configuration
-print("Loading local configuration...")
+-- print("Loading local configuration...")
 
 local success, localConfig = pcall(require, "config")
 
 -- If the local configuration failed to load, print the error and export default configuration
-if not success then
-    print("Failed to load local configuration: " .. localConfig) -- localConfig contains the error message
-    return cfg
+if not success then 
+    error("Failed to load local configuration: " .. localConfig) -- localConfig contains the error message
 end
 
 -- Merge the default and local configurations, giving local overrides precedence
 for category, categoryConfig in pairs(localConfig) do
-    print("Merging category: " .. category)
+    -- print("Merging category: " .. category)
     for key, value in pairs(categoryConfig) do
-        print("  Overriding key: " .. key .. " with value: " .. tostring(value))
+        -- print("  Overriding key: " .. key .. " with value: " .. tostring(value))
         cfg[category][key] = value
     end
 end
 
-print("Local configuration loaded successfully.")
+-- print("Local configuration loaded successfully.")
 
 -- Export the movement configuration
 return cfg
