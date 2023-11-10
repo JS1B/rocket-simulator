@@ -4,3 +4,6 @@
 [submodule "lib/love"]
 	path = lib/love
 	url = https://github.com/love2d/love.git
+[submodule "lib/busted"]
+	path = lib/busted
+	url = https://github.com/lunarmodules/busted.git
