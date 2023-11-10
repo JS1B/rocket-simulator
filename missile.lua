@@ -1,4 +1,5 @@
 local Missile = {}
+local unpack = table.unpack or unpack
 
 -- Constructor for the Missile class
 function Missile:new(config)
@@ -18,16 +19,18 @@ function Missile:new(config)
     self.algorithms = require("algorithms")
     self.algorithm = config.algorithm
 
-    -- Private variables
-    self._velocity = { x = 0, y = 0 }
     self.trace = {
         enabled = config.trace,
         length = config.traceLength,
-        color = config.traceColor,
+        color = { unpack(config.traceColor) }, -- Copy the table
         frequency = config.traceFrequency,
-        _lastTime = love.timer.getTime(),
-        _points = { }
+        _lastTime = 0,
+        _points = {}
     }
+
+    -- Private variables
+    self._velocity = { x = 0, y = 0 }
+
     self:appendPoint()
 
     return self
@@ -59,12 +62,11 @@ function Missile:update(dt, target)
     -- Update the Missile's position
     self.position.x = self.position.x + self._velocity.x * dt
     self.position.y = self.position.y + self._velocity.y * dt
-
-    self:triggerPointsDraw()
 end
 
 -- Draw method for the Missile class
 function Missile:draw()
+    self:triggerPointsDraw()
     love.graphics.rectangle("fill", self.position.x, self.position.y, 14, 6)
     if self.trace.enabled then
         love.graphics.points(self.trace._points)
