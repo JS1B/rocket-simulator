@@ -58,7 +58,8 @@ local success, localConfig = pcall(require, "config")
 
 -- If the local configuration failed to load, print the error and export default configuration
 if not success then 
-    error("Failed to load local configuration: " .. localConfig) -- localConfig contains the error message
+    io.write("Warning: Failed to load local configuration.\n") -- localConfig contains the error message
+    return cfg
 end
 
 -- Merge the default and local configurations, giving local overrides precedence
