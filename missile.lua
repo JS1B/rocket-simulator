@@ -1,4 +1,5 @@
 local Missile = {}
+---@diagnostic disable-next-line: deprecated
 local unpack = table.unpack or unpack
 
 -- Constructor for the Missile class
