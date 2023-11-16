@@ -38,7 +38,9 @@ local cfg = {
         width = 800,                       -- The width of the window
         height = 600,                      -- The height of the window
         icon = "assets/images/rocket.png", -- The icon of the window
-        mouseVisible = true                -- Whether the mouse is visible or not
+        mouseVisible = true,               -- Whether the mouse is visible or not
+        resizable = true,                  -- Whether the window is resizable or not
+        vsync = false                      -- Whether vsync is enabled or not
     },
     controls = {
         accelerate = "w",          -- The key used to accelerate
@@ -57,7 +59,7 @@ local cfg = {
 local success, localConfig = pcall(require, "config")
 
 -- If the local configuration failed to load, print the error and export default configuration
-if not success then 
+if not success then
     io.write("Warning: Failed to load local configuration.\n") -- localConfig contains the error message
     return cfg
 end

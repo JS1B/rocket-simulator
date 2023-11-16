@@ -13,14 +13,15 @@ function love.load()
     -- Set the window properties
     love.graphics.setBackgroundColor(20 / 255, 20 / 255, 20 / 255, 0)
     love.window.setTitle("Rocket simulator")
-    love.window.setMode(config.window.width, config.window.height)
+    love.window.setMode(config.window.width, config.window.height, { resizable = config.window.resizable })
+    love.window.setVSync(config.window.vsync)
     love.mouse.setVisible(config.window.mouseVisible)
 
     local success, imageData = pcall(love.image.newImageData, config.window.icon)
     if success then
         love.window.setIcon(imageData)
     else
-        print("Failed to load window icon: " .. imageData)  -- imageData contains the error message
+        print("Warning: Failed to load window icon: " .. imageData)  -- imageData contains the error message
     end
 
     -- Create new instances
