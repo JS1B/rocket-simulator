@@ -22,12 +22,12 @@ local cfg = {
         x = 10,             -- The initial x position of the target
         y = 20,             -- The initial y position of the target
 
-        acceleration = 0.5, -- The acceleration of the target
+        acceleration = 2.5, -- The acceleration of the target
 
         speed = 5,          -- The initial speed of the target
         maxSpeed = 50,      -- The maximum speed of the target
 
-        turnSpeed = 2       -- The turning speed of the target
+        turnSpeed = 1.5       -- The turning speed of the target
     },
     ui = {
         width = 140,                                -- The width of the UI
