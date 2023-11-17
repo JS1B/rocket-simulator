@@ -100,7 +100,15 @@ end
 
 -- Reset method for the Missile class
 function Missile:reset()
-    -- print("TODO: Implement Missile:reset()")
+    -- Reset the Missile's velocity and randomize its position
+    self.position = {
+        x = love.math.random(0, love.graphics.getWidth()),
+        y = love.math.random(0, love.graphics.getHeight())
+    }
+    self._velocity = { x = 0, y = 0 }
+    self.speed = 0
+    self.trace._points = {}
+    -- self.algorithm = next(self.algorithms)
 end
 
 return Missile

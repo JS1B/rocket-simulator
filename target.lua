@@ -51,7 +51,10 @@ end
 
 -- Reset method for the Target class
 function Target:reset()
-    print("TODO: Implement Target:reset()")
+    -- Reset the Target's speed
+    if self.speed > self.maxSpeed / 10 then
+        self.speed = self.maxSpeed / 10
+    end
 end
 
 return Target
