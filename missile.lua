@@ -66,6 +66,8 @@ end
 
 -- Draw method for the Missile class
 function Missile:draw()
+    -- Draw the Missile and its trace
+
     self:triggerPointsDraw()
     love.graphics.rectangle("fill", self.position.x, self.position.y, 14, 6)
     if self.trace.enabled then
@@ -74,15 +76,19 @@ function Missile:draw()
 end
 
 function Missile:triggerPointsDraw()
-    if self.trace.enabled then
-        local currentTime = love.timer.getTime()
-        if currentTime - self.trace._lastTime > self.trace.frequency then
-            self.trace._lastTime = currentTime
-            self:appendPoint()
-            if #self.trace._points > self.trace.length then
-                table.remove(self.trace._points, 1)
-            end
-        end
+    if not self.trace.enabled then
+        return
+    end
+
+    local currentTime = love.timer.getTime()
+    if currentTime - self.trace._lastTime <= self.trace.frequency then
+        return
+    end
+
+    self.trace._lastTime = currentTime
+    self:appendPoint()
+    if #self.trace._points > self.trace.length then
+        table.remove(self.trace._points, 1)
     end
 end
 
