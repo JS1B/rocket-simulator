@@ -72,7 +72,7 @@ function love.keypressed(key)
     if key == config.controls.reset then
         target:reset()
         for _, missile in pairs(missiles) do
-            missile:reset()
+            missile:reset(love.graphics.getWidth(), love.graphics.getHeight())
         end
     end
     if key == config.controls.changeAlgorithm then

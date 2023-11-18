@@ -111,15 +111,16 @@ function Missile:changeAlgorithm()
 end
 
 -- Reset method for the Missile class
-function Missile:reset()
+function Missile:reset(ScreenWidth, ScreenHeight)
     -- Reset the Missile's velocity and randomize its position
     self.position = {
-        x = love.math.random(0, love.graphics.getWidth()),
-        y = love.math.random(0, love.graphics.getHeight())
+        x = math.random(0, ScreenWidth),
+        y = math.random(0, ScreenHeight)
     }
     self._velocity = { x = 0, y = 0 }
     self.speed = 0
     self.trace._points = {}
+    self.trace._lastTime = 0
     -- self.algorithm = next(self.algorithms)
 end
 
