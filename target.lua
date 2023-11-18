@@ -40,8 +40,16 @@ function Target:update(dt)
     -- Calculate the velocity and position components
     self._velocity.x = math.cos(self.angle) * self.speed
     self._velocity.y = math.sin(self.angle) * self.speed
-    self.position.x = self.position.x + self._velocity.x * dt
-    self.position.y = self.position.y + self._velocity.y * dt
+
+    -- Utilize small step integration
+    local small_dt = 0.01
+    local remaining_dt = dt
+    while remaining_dt > 0 do
+        local current_dt = math.min(small_dt, remaining_dt)
+        self.position.x = self.position.x + self._velocity.x * current_dt
+        self.position.y = self.position.y + self._velocity.y * current_dt
+        remaining_dt = remaining_dt - current_dt
+    end
 end
 
 -- Draw method for the Target class
