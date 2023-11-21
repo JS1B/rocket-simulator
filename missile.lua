@@ -9,6 +9,12 @@ function Missile:new(config)
     Missile.__index = Missile
 
     self.position = { x = config.x, y = config.y }
+    self.size = { width = config.width, height = config.height }
+    self.spriteImage = love.graphics.newImage(config.sprite)
+    self.spriteBatch = love.graphics.newSpriteBatch(self.spriteImage)
+    self.spriteRotation = config.spriteRotation
+
+    self.angle = 0 -- radians
 
     self.speed = config.speed
     self.maxSpeed = config.maxSpeed
@@ -68,17 +74,26 @@ function Missile:update(dt, target)
         self.position.y = self.position.y + self._velocity.y * current_dt
         remaining_dt = remaining_dt - current_dt
     end
+    self.angle = math.atan2(self._velocity.y, self._velocity.x)
 end
 
 -- Draw method for the Missile class
 function Missile:draw()
     -- Draw the Missile and its trace
-
     self:triggerPointsDraw()
-    love.graphics.rectangle("fill", self.position.x, self.position.y, 14, 6)
     if self.trace.enabled then
         love.graphics.points(self.trace._points)
     end
+
+    local x = self.position.x
+    local y = self.position.y
+    local scaleX = self.size.width / self.spriteImage:getWidth()
+    local scaleY = self.size.height / self.spriteImage:getHeight()
+
+    self.spriteBatch:clear()
+    self.spriteBatch:add(x, y, self.angle + self.spriteRotation, scaleX, scaleY, self.spriteImage:getWidth() / 2,
+        self.spriteImage:getHeight() * 3 / 4)
+    love.graphics.draw(self.spriteBatch)
 end
 
 function Missile:triggerPointsDraw()

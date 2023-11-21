@@ -1,33 +1,43 @@
 -- Define the movement configuration for both rocket and target
 local cfg = {
     missile = {
-        x = 10,                        -- The initial x position of the rocket
-        y = 300,                       -- The initial y position of the rocket
+        x = 10,                              -- The initial x position of the rocket
+        y = 300,                             -- The initial y position of the rocket
 
-        acceleration = 1,              -- The acceleration of the rocket
+        sprite = "assets/images/rocket.png", -- The sprite of the rocket
+        spriteRotation = math.rad(90),       -- The rotation of the sprite of the rocket (in radians)
+        width = 25,                          -- The width of the rocket
+        height = 25,                         -- The height of the rocket
 
-        speed = 0,                     -- The initial speed of the rocket
-        maxSpeed = 80,                 -- The maximum speed of the rocket
+        acceleration = 1,                    -- The acceleration of the rocket
 
-        turnSpeed = 5,                 -- The turning speed of the rocket
+        speed = 0,                           -- The initial speed of the rocket
+        maxSpeed = 80,                       -- The maximum speed of the rocket
 
-        algorithm = "PG",              -- The algorithm that the rocket will use
+        turnSpeed = 5,                       -- The turning speed of the rocket
 
-        trace = true,                  -- Whether the rocket will leave a trace or not
-        traceLength = 100,             -- The length of the trace
-        traceColor = { 1, 1, 1, 0.5 }, -- The color of the trace
-        traceFrequency = 0.5           -- The frequency of the trace in seconds
+        algorithm = "PG",                    -- The algorithm that the rocket will use
+
+        trace = true,                        -- Whether the rocket will leave a trace or not
+        traceLength = 100,                   -- The length of the trace
+        traceColor = { 1, 1, 1, 0.5 },       -- The color of the trace
+        traceFrequency = 0.5                 -- The frequency of the trace in seconds
     },
     target = {
-        x = 10,             -- The initial x position of the target
-        y = 20,             -- The initial y position of the target
+        x = 10,                             -- The initial x position of the target
+        y = 20,                             -- The initial y position of the target
 
-        acceleration = 2.5, -- The acceleration of the target
+        sprite = "assets/images/plane.png", -- The sprite of the target
+        spriteRotation = math.rad(-90),      -- The rotation of the sprite of the target (in radians)
+        width = 40,                         -- The width of the target
+        height = 40,                        -- The height of the target
 
-        speed = 5,          -- The initial speed of the target
-        maxSpeed = 50,      -- The maximum speed of the target
+        acceleration = 5,                   -- The acceleration of the target
 
-        turnSpeed = 1.5       -- The turning speed of the target
+        speed = 5,                          -- The initial speed of the target
+        maxSpeed = 80,                      -- The maximum speed of the target
+
+        turnSpeed = 0.6                     -- The turning speed of the target
     },
     ui = {
         width = 140,                                -- The width of the UI

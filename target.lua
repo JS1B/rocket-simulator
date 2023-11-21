@@ -6,6 +6,11 @@ function Target:new(config)
     Target.__index = Target
 
     self.position = { x = config.x, y = config.y }
+    self.size = { width = config.width, height = config.height }
+    self.spriteImage = love.graphics.newImage(config.sprite)
+    self.spriteBatch = love.graphics.newSpriteBatch(self.spriteImage)
+    self.spriteRotation = config.spriteRotation
+
     self.angle = 0 -- radians
 
     self.speed = config.speed
@@ -54,7 +59,15 @@ end
 
 -- Draw method for the Target class
 function Target:draw()
-    love.graphics.rectangle("fill", self.position.x, self.position.y, 14, 6)
+    local x = self.position.x
+    local y = self.position.y
+    local scaleX = self.size.width / self.spriteImage:getWidth()
+    local scaleY = self.size.height / self.spriteImage:getHeight()
+
+    self.spriteBatch:clear()
+    self.spriteBatch:add(x, y, self.angle + self.spriteRotation, scaleX, scaleY, self.spriteImage:getWidth() / 2,
+        self.spriteImage:getHeight() * 5 / 8)
+    love.graphics.draw(self.spriteBatch)
 end
 
 -- Reset method for the Target class
