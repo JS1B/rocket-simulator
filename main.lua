@@ -25,8 +25,15 @@ function love.load()
     end
 
     -- Create new instances
+    local targetImage = love.graphics.newImage(config.target.sprite)
+    local tagetSpriteBatch = love.graphics.newSpriteBatch(targetImage)
+    local missileImage = love.graphics.newImage(config.missile.sprite)
+    local missileSpriteBatch = love.graphics.newSpriteBatch(missileImage)
+
     target = Target:new(config.target)
+    target:load(targetImage, tagetSpriteBatch)
     missiles = { Missile:new(config.missile) }
+    missiles[1]:load(missileImage, missileSpriteBatch)
     ui = UI:new(config.ui)
 end
 

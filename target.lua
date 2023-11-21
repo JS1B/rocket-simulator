@@ -7,8 +7,8 @@ function Target:new(config)
 
     self.position = { x = config.x, y = config.y }
     self.size = { width = config.width, height = config.height }
-    self.spriteImage = love.graphics.newImage(config.sprite)
-    self.spriteBatch = love.graphics.newSpriteBatch(self.spriteImage)
+    self.spriteImage = nil
+    self.spriteBatch = nil
     self.spriteRotation = config.spriteRotation
 
     self.angle = 0 -- radians
@@ -23,6 +23,14 @@ function Target:new(config)
     -- Private variables
     self._velocity = { x = 0, y = 0 }
     return self
+end
+
+-- Load assets for the Target class
+function Target:load(spriteImage, spriteBatch)
+    -- Load the Missile's sprite
+    self.spriteImage = spriteImage
+    self.spriteBatch = spriteBatch
+    self.spriteImage:setFilter("nearest", "nearest")
 end
 
 -- Turn method for the Target class
