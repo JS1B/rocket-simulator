@@ -113,3 +113,7 @@ function love.keypressed(key)
     --     table.insert(missiles, Missile:new(config.missile))
     -- end
 end
+
+function love.resize(width, height)
+    ui:resize(width, height)
+end

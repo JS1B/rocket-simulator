@@ -50,4 +50,8 @@ function SuitUI:draw()
     self.suit.draw()
 end
 
+function SuitUI:resize(width, height)
+    self.suit.layout:reset(width - self.UI_width, 60, 2)
+end
+
 return SuitUI
