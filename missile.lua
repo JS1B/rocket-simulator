@@ -35,6 +35,9 @@ function Missile:new(config)
         _points = {}
     }
 
+    self.particleSystem = nil
+    self.particle = config.particle
+
     -- Private variables
     self._velocity = { x = 0, y = 0 }
 
@@ -44,11 +47,14 @@ function Missile:new(config)
 end
 
 -- Load assets for the Missile class
-function Missile:load(spriteImage, spriteBatch)
+function Missile:load(spriteImage, spriteBatch, particleSystem)
     -- Load the Missile's sprite
     self.spriteImage = spriteImage
     self.spriteBatch = spriteBatch
     self.spriteImage:setFilter("nearest", "nearest")
+
+    -- Create a new particle system for the missile
+    self.particleSystem = particleSystem
 end
 
 -- Update method for the Missile class
@@ -83,10 +89,22 @@ function Missile:update(dt, target)
         remaining_dt = remaining_dt - current_dt
     end
     self.angle = math.atan2(self._velocity.y, self._velocity.x)
+
+    -- Update the particle system
+    self.particleSystem:setPosition(self.position.x, self.position.y)
+    self.particleSystem:setDirection(self.angle + math.pi)
+    self.particleSystem:setSpeed(self.speed * 0.5, self.speed * 1.5)
+    self.particleSystem:setSpread(self.particle.spread / math.sqrt(self.speed))
+    self.particleSystem:setRotation(self.angle - math.pi / 4)
+    self.particleSystem:setRelativeRotation(true)
+    self.particleSystem:update(dt)
 end
 
 -- Draw method for the Missile class
 function Missile:draw()
+    -- Draw the particle system
+    love.graphics.draw(self.particleSystem, 0, 0)
+
     -- Draw the Missile and its trace
     self:triggerPointsDraw()
     if self.trace.enabled then

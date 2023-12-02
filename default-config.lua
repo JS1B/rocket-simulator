@@ -18,17 +18,26 @@ local cfg = {
 
         algorithm = "PG",                    -- The algorithm that the rocket will use
 
-        trace = true,                        -- Whether the rocket will leave a trace or not
+        trace = false,                       -- Whether the rocket will leave a trace or not
         traceLength = 100,                   -- The length of the trace
         traceColor = { 1, 1, 1, 0.5 },       -- The color of the trace
-        traceFrequency = 0.5                 -- The frequency of the trace in seconds
+        traceFrequency = 0.5,                -- The frequency of the trace in seconds
+
+        particle = {
+            image = "assets/images/fire.png", -- The image of the particle
+            size = 0.1,                       -- The size of the particle
+            spread = math.rad(360),           -- The spread of the particle (in radians)
+            avgLifetime = 1,                  -- The lifetime of the particle
+            count = 400,                      -- The number of particles to emit
+            emissionRate = 50                 -- The emission rate of the particle system
+        }
     },
     target = {
         x = 10,                             -- The initial x position of the target
         y = 20,                             -- The initial y position of the target
 
         sprite = "assets/images/plane.png", -- The sprite of the target
-        spriteRotation = math.rad(-90),      -- The rotation of the sprite of the target (in radians)
+        spriteRotation = math.rad(-90),     -- The rotation of the sprite of the target (in radians)
         width = 40,                         -- The width of the target
         height = 40,                        -- The height of the target
 
@@ -37,16 +46,26 @@ local cfg = {
         speed = 5,                          -- The initial speed of the target
         maxSpeed = 80,                      -- The maximum speed of the target
 
-        turnSpeed = 0.6                     -- The turning speed of the target
+        turnSpeed = 0.6,                    -- The turning speed of the target
+
+        particle = {
+            image = "assets/images/smoke4.png", -- The image of the particle
+            size = 0.8,                         -- The size of the particle
+            spread = math.rad(360),             -- The spread of the particle (in radians)
+            avgLifetime = 1,                    -- The lifetime of the particle
+            count = 10,                         -- The number of particles to emit
+            emissionRate = 1,                   -- The emission rate of the particle system
+            damping = 0.5                       -- The damping of the particle system
+        }
     },
     ui = {
-        width = 140,                                -- The width of the UI
+        width = 160,                                -- The width of the UI
         font = "assets/fonts/NotoSans-Regular.ttf", -- The font used by the UI
         fontSize = 13                               -- The font size used by the UI
     },
     window = {
-        width = 800,                       -- The width of the window
-        height = 600,                      -- The height of the window
+        width = 1400,                       -- The width of the window
+        height = 900,                      -- The height of the window
         icon = "assets/images/rocket.png", -- The icon of the window
         mouseVisible = true,               -- Whether the mouse is visible or not
         resizable = true,                  -- Whether the window is resizable or not

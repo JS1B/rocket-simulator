@@ -20,17 +20,23 @@ function Target:new(config)
 
     self.acceleration = config.acceleration
 
+    self.particleSystem = nil
+    self.particle = config.particle
+
     -- Private variables
     self._velocity = { x = 0, y = 0 }
     return self
 end
 
 -- Load assets for the Target class
-function Target:load(spriteImage, spriteBatch)
+function Target:load(spriteImage, spriteBatch, particleSystem)
     -- Load the Missile's sprite
     self.spriteImage = spriteImage
     self.spriteBatch = spriteBatch
     self.spriteImage:setFilter("nearest", "nearest")
+
+    -- Create a new particle system for the missile
+    self.particleSystem = particleSystem
 end
 
 -- Turn method for the Target class
@@ -63,10 +69,20 @@ function Target:update(dt)
         self.position.y = self.position.y + self._velocity.y * current_dt
         remaining_dt = remaining_dt - current_dt
     end
+
+    -- Update the particle system
+    self.particleSystem:setPosition(self.position.x, self.position.y)
+    self.particleSystem:setDirection(self.angle + math.pi)
+    self.particleSystem:setSpeed(self.speed * 0.2, self.speed * 0.5)
+    self.particleSystem:setSpread(self.particle.spread)
+    self.particleSystem:update(dt)
 end
 
 -- Draw method for the Target class
 function Target:draw()
+    -- Draw the particle system
+    love.graphics.draw(self.particleSystem, 0, 0)
+
     local x = self.position.x
     local y = self.position.y
     local scaleX = self.size.width / self.spriteImage:getWidth()

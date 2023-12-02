@@ -21,7 +21,7 @@ function love.load()
     if success then
         love.window.setIcon(imageData)
     else
-        print("Warning: Failed to load window icon: " .. imageData)  -- imageData contains the error message
+        print("Warning: Failed to load window icon: " .. imageData) -- imageData contains the error message
     end
 
     -- Create new instances
@@ -30,10 +30,30 @@ function love.load()
     local missileImage = love.graphics.newImage(config.missile.sprite)
     local missileSpriteBatch = love.graphics.newSpriteBatch(missileImage)
 
+    local missileParticleImage = love.graphics.newImage(config.missile.particle.image)
+    local missileParticleSystem = love.graphics.newParticleSystem(missileParticleImage, config.missile.particle.count)
+    missileParticleSystem:setParticleLifetime(config.missile.particle.avgLifetime / 2,
+        config.missile.particle.avgLifetime * 3 / 2)
+    missileParticleSystem:setSizes(config.missile.particle.size, 0)
+    missileParticleSystem:setEmissionRate(config.missile.particle.emissionRate)
+
+    -- local targetSmokeFrames = {}
+    -- for i = 1, 7 do
+    --     targetSmokeFrames[i] = "assets/images/smoke" .. i .. ".png"
+    -- end
+    -- local targetParticleImage = love.graphics.newArrayImage(targetSmokeFrames)
+    local targetParticleImage = love.graphics.newImage(config.target.particle.image)
+    local targetParticleSystem = love.graphics.newParticleSystem(targetParticleImage, config.target.particle.count)
+    targetParticleSystem:setParticleLifetime(config.target.particle.avgLifetime / 2,
+        config.target.particle.avgLifetime * 3 / 2)
+    targetParticleSystem:setSizes(config.target.particle.size, 0)
+    targetParticleSystem:setLinearDamping(config.target.particle.damping, 1)
+    targetParticleSystem:setEmissionRate(config.target.particle.emissionRate)
+
     target = Target:new(config.target)
-    target:load(targetImage, tagetSpriteBatch)
+    target:load(targetImage, tagetSpriteBatch, targetParticleSystem)
     missiles = { Missile:new(config.missile) }
-    missiles[1]:load(missileImage, missileSpriteBatch)
+    missiles[1]:load(missileImage, missileSpriteBatch, missileParticleSystem)
     ui = UI:new(config.ui)
 end
 
