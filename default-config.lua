@@ -9,14 +9,14 @@ local cfg = {
         width = 25,                          -- The width of the rocket
         height = 25,                         -- The height of the rocket
 
-        acceleration = 1,                    -- The acceleration of the rocket
+        acceleration = 10,                   -- The acceleration of the rocket
 
         speed = 0,                           -- The initial speed of the rocket
-        maxSpeed = 80,                       -- The maximum speed of the rocket
+        maxSpeed = 200,                      -- The maximum speed of the rocket
 
         turnSpeed = 5,                       -- The turning speed of the rocket
 
-        algorithm = "PG",                    -- The algorithm that the rocket will use
+        algorithm = "PG",                    -- The algorithm that the rocket will use initially
 
         trace = false,                       -- Whether the rocket will leave a trace or not
         traceLength = 100,                   -- The length of the trace
@@ -41,12 +41,12 @@ local cfg = {
         width = 40,                         -- The width of the target
         height = 40,                        -- The height of the target
 
-        acceleration = 5,                   -- The acceleration of the target
+        acceleration = 16,                  -- The acceleration of the target
 
         speed = 5,                          -- The initial speed of the target
-        maxSpeed = 80,                      -- The maximum speed of the target
+        maxSpeed = 120,                     -- The maximum speed of the target
 
-        turnSpeed = 0.6,                    -- The turning speed of the target
+        turnSpeed = 2,                      -- The turning speed of the target
 
         particle = {
             image = "assets/images/smoke4.png", -- The image of the particle
@@ -64,7 +64,7 @@ local cfg = {
         fontSize = 13                               -- The font size used by the UI
     },
     window = {
-        width = 1400,                       -- The width of the window
+        width = 1400,                      -- The width of the window
         height = 900,                      -- The height of the window
         icon = "assets/images/rocket.png", -- The icon of the window
         mouseVisible = true,               -- Whether the mouse is visible or not
