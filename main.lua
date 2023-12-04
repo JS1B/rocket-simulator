@@ -24,7 +24,7 @@ function love.load()
         print("Warning: Failed to load window icon: " .. imageData) -- imageData contains the error message
     end
 
-    -- Create new instances
+    -- Load assets
     local targetImage = love.graphics.newImage(config.target.sprite)
     local tagetSpriteBatch = love.graphics.newSpriteBatch(targetImage)
     local missileImage = love.graphics.newImage(config.missile.sprite)
@@ -32,24 +32,34 @@ function love.load()
 
     local missileParticleImage = love.graphics.newImage(config.missile.particle.image)
     local missileParticleSystem = love.graphics.newParticleSystem(missileParticleImage, config.missile.particle.count)
-    missileParticleSystem:setParticleLifetime(config.missile.particle.avgLifetime / 2,
-        config.missile.particle.avgLifetime * 3 / 2)
+    missileParticleSystem:setParticleLifetime(config.missile.particle.avgLifetime)
     missileParticleSystem:setSizes(config.missile.particle.size, 0)
     missileParticleSystem:setEmissionRate(config.missile.particle.emissionRate)
 
-    -- local targetSmokeFrames = {}
-    -- for i = 1, 7 do
-    --     targetSmokeFrames[i] = "assets/images/smoke" .. i .. ".png"
-    -- end
-    -- local targetParticleImage = love.graphics.newArrayImage(targetSmokeFrames)
     local targetParticleImage = love.graphics.newImage(config.target.particle.image)
-    local targetParticleSystem = love.graphics.newParticleSystem(targetParticleImage, config.target.particle.count)
-    targetParticleSystem:setParticleLifetime(config.target.particle.avgLifetime / 2,
-        config.target.particle.avgLifetime * 3 / 2)
-    targetParticleSystem:setSizes(config.target.particle.size, 0)
-    targetParticleSystem:setLinearDamping(config.target.particle.damping, 1)
-    targetParticleSystem:setEmissionRate(config.target.particle.emissionRate)
+    local targetParticleImages = {}
+    for yy = 0, 2 do
+        for xx = 0, 2 do
+            table.insert(targetParticleImages,
+                love.graphics.newQuad(xx * config.target.particle.textureWidth + 1,
+                    yy * config.target.particle.textureHeight + 1,
+                    config.target.particle.textureWidth,
+                    config.target.particle.textureHeight,
+                    targetParticleImage:getDimensions()))
+        end
+        if #targetParticleImages >= config.target.particle.textureCount then
+            break
+        end
+    end
 
+    local targetParticleSystem = love.graphics.newParticleSystem(targetParticleImage, config.target.particle.count)
+    targetParticleSystem:setParticleLifetime(config.target.particle.lifetime)
+    targetParticleSystem:setSizes(config.target.particle.size)
+    targetParticleSystem:setLinearDamping(config.target.particle.damping)
+    targetParticleSystem:setEmissionRate(config.target.particle.emissionRate)
+    targetParticleSystem:setQuads(targetParticleImages)
+
+    -- Create new instances
     target = Target:new(config.target)
     target:load(targetImage, tagetSpriteBatch, targetParticleSystem)
     missiles = { Missile:new(config.missile) }

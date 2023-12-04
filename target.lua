@@ -72,8 +72,8 @@ function Target:update(dt)
 
     -- Update the particle system
     self.particleSystem:setPosition(self.position.x, self.position.y)
-    self.particleSystem:setDirection(self.angle + math.pi)
-    self.particleSystem:setSpeed(self.speed * 0.2, self.speed * 0.5)
+    self.particleSystem:setDirection(self.angle + self.particle.spreadOffset)
+    self.particleSystem:setSpeed(math.sqrt(self.speed) + 40)
     self.particleSystem:setSpread(self.particle.spread)
     self.particleSystem:update(dt)
 end

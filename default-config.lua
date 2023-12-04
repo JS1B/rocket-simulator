@@ -49,13 +49,17 @@ local cfg = {
         turnSpeed = 2,                      -- The turning speed of the target
 
         particle = {
-            image = "assets/images/smoke4.png", -- The image of the particle
-            size = 0.8,                         -- The size of the particle
-            spread = math.rad(360),             -- The spread of the particle (in radians)
-            avgLifetime = 1,                    -- The lifetime of the particle
-            count = 10,                         -- The number of particles to emit
-            emissionRate = 1,                   -- The emission rate of the particle system
-            damping = 0.5                       -- The damping of the particle system
+            image = "assets/images/smoke.png", -- The images of the particle animation
+            textureWidth = 30,                 -- The width of the particle image
+            textureHeight = 30,                -- The height of the particle image
+            textureCount = 7,                  -- The number of images in the particle animation
+            size = 0.5,                        -- The size of the particle
+            spread = math.rad(10),             -- The spread of the particle (in radians)
+            spreadOffset = math.rad(45),       -- The spread offset of the particle (in radians)
+            lifetime = 1.4,                      -- The lifetime of the particle
+            count = 100,                       -- The number of particles to emit
+            emissionRate = 4,                  -- The emission rate of the particle system
+            damping = 0.8                      -- The damping of the particle system
         }
     },
     ui = {
