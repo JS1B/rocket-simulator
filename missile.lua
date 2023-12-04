@@ -1,6 +1,7 @@
 local Missile = {}
 ---@diagnostic disable-next-line: deprecated
 local unpack = table.unpack or unpack
+local utils = require("utils")
 
 -- Constructor for the Missile class
 function Missile:new(config)
@@ -94,9 +95,10 @@ function Missile:update(dt, target)
     self.particleSystem:setPosition(self.position.x, self.position.y)
     self.particleSystem:setDirection(self.angle + math.pi)
     self.particleSystem:setSpeed(self.speed * 0.5, self.speed * 1.5)
-    self.particleSystem:setSpread(self.particle.spread / math.sqrt(self.speed))
-    self.particleSystem:setRotation(self.angle - math.pi / 4)
-    self.particleSystem:setRelativeRotation(true)
+    self.particleSystem:setSpread(utils.map(self.speed, 0, self.maxSpeed,
+        self.particle.minSpeedSpread, self.particle.maxSpeedSpread))
+    self.particleSystem:setEmissionRate(utils.map(self.speed, 0, self.maxSpeed,
+        self.particle.minSpeedEmissionRate, self.particle.maxSpeedEmissionRate))
     self.particleSystem:update(dt)
 end
 

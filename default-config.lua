@@ -26,10 +26,12 @@ local cfg = {
         particle = {
             image = "assets/images/fire.png", -- The image of the particle
             size = 0.1,                       -- The size of the particle
-            spread = math.rad(360),           -- The spread of the particle (in radians)
-            avgLifetime = 1,                  -- The lifetime of the particle
+            minSpeedSpread = math.rad(90),    -- The minimum speed spread of the particle (in radians)
+            maxSpeedSpread = math.rad(22),    -- The maximum speed spread of the particle (in radians)
+            avgLifetime = 1,                  -- The average lifetime of the particle
             count = 400,                      -- The number of particles to emit
-            emissionRate = 50                 -- The emission rate of the particle system
+            minSpeedEmissionRate = 30,        -- The emission rate of the particle system
+            maxSpeedEmissionRate = 120        -- The emission rate of the particle system
         }
     },
     target = {
@@ -56,7 +58,7 @@ local cfg = {
             size = 0.5,                        -- The size of the particle
             spread = math.rad(10),             -- The spread of the particle (in radians)
             spreadOffset = math.rad(45),       -- The spread offset of the particle (in radians)
-            lifetime = 1.4,                      -- The lifetime of the particle
+            lifetime = 1.4,                    -- The lifetime of the particle
             count = 100,                       -- The number of particles to emit
             emissionRate = 4,                  -- The emission rate of the particle system
             damping = 0.8                      -- The damping of the particle system

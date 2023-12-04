@@ -34,7 +34,6 @@ function love.load()
     local missileParticleSystem = love.graphics.newParticleSystem(missileParticleImage, config.missile.particle.count)
     missileParticleSystem:setParticleLifetime(config.missile.particle.avgLifetime)
     missileParticleSystem:setSizes(config.missile.particle.size, 0)
-    missileParticleSystem:setEmissionRate(config.missile.particle.emissionRate)
 
     local targetParticleImage = love.graphics.newImage(config.target.particle.image)
     local targetParticleImages = {}
