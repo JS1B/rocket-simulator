@@ -2,6 +2,7 @@ local Target
 local Missile
 local UI
 local config
+local backgroundImages = {}
 
 -- Load function in the LÖVE framework
 function love.load()
@@ -17,6 +18,8 @@ function love.load()
     love.window.setVSync(config.window.vsync)
     love.mouse.setVisible(config.window.mouseVisible)
 
+    ---- Load assets ----
+    -- Load window icon
     local success, imageData = pcall(love.image.newImageData, config.window.icon)
     if success then
         love.window.setIcon(imageData)
@@ -24,7 +27,17 @@ function love.load()
         print("Warning: Failed to load window icon: " .. imageData) -- imageData contains the error message
     end
 
-    -- Load assets
+    -- Load background images
+    for i, image in pairs(config.window.backgroundImages) do
+        local success, imageData = pcall(love.image.newImageData, image)
+        if success then
+            local bgImage = love.graphics.newImage(imageData)
+            table.insert(backgroundImages, { image = bgImage, depth = 5 * (#config.window.backgroundImages - i), x = 0 })
+        else
+            print("Warning: Failed to load background image: " .. imageData) -- imageData contains the error message
+        end
+    end
+
     local targetImage = love.graphics.newImage(config.target.sprite)
     local tagetSpriteBatch = love.graphics.newSpriteBatch(targetImage)
     local missileImage = love.graphics.newImage(config.missile.sprite)
@@ -89,14 +102,27 @@ function love.update(dt)
         missile:update(dt, target)
     end
     ui:update(dt, target, missiles)
+
+    -- Update background images
+    for _, bgImage in ipairs(backgroundImages) do
+        bgImage.x = bgImage.x - target._velocity.x * dt / bgImage.depth
+    end
 end
 
 -- Draw function in the LÖVE frameworks
 function love.draw()
+    -- Draw background images
+    for _, bgImage in ipairs(backgroundImages) do
+        love.graphics.draw(bgImage.image, bgImage.x, 0, 0, love.graphics.getWidth() * 1.5 / bgImage.image:getWidth(),
+            love.graphics.getHeight() / bgImage.image:getHeight())
+    end
+
+    -- Draw target and missiles
     target:draw()
     for _, missile in pairs(missiles) do
         missile:draw()
     end
+
     ui:draw()
 end
 

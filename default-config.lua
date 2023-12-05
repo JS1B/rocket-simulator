@@ -75,7 +75,11 @@ local cfg = {
         icon = "assets/images/rocket.png", -- The icon of the window
         mouseVisible = true,               -- Whether the mouse is visible or not
         resizable = true,                  -- Whether the window is resizable or not
-        vsync = false                      -- Whether vsync is enabled or not
+        vsync = false,                     -- Whether vsync is enabled or not
+        backgroundImages = { "assets/images/bg/1.png",
+            "assets/images/bg/2.png",
+            "assets/images/bg/3.png",
+            "assets/images/bg/4.png", } -- The background image of the window
     },
     controls = {
         accelerate = "w",          -- The key used to accelerate
