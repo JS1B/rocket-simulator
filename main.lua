@@ -13,29 +13,19 @@ function love.load()
 
     -- Set the window properties
     love.graphics.setBackgroundColor(20 / 255, 20 / 255, 20 / 255, 0)
-    love.window.setTitle("Rocket simulator")
+    love.window.setTitle(config.window.title)
     love.window.setMode(config.window.width, config.window.height, { resizable = config.window.resizable })
+    love.window.setFullscreen(config.window.fullscreen)
     love.window.setVSync(config.window.vsync)
     love.mouse.setVisible(config.window.mouseVisible)
 
     ---- Load assets ----
     -- Load window icon
-    local success, imageData = pcall(love.image.newImageData, config.window.icon)
-    if success then
-        love.window.setIcon(imageData)
-    else
-        print("Warning: Failed to load window icon: " .. imageData) -- imageData contains the error message
-    end
+    love.window.setIcon(love.image.newImageData(config.window.icon))
 
     -- Load background images
-    for i, image in pairs(config.window.backgroundImages) do
-        local success, imageData = pcall(love.image.newImageData, image)
-        if success then
-            local bgImage = love.graphics.newImage(imageData)
-            table.insert(backgroundImages, { image = bgImage, depth = 5 * (#config.window.backgroundImages - i), x = 0 })
-        else
-            print("Warning: Failed to load background image: " .. imageData) -- imageData contains the error message
-        end
+    for _, bgImage in ipairs(config.window.backgroundImages) do
+        table.insert(backgroundImages, { image = love.graphics.newImage(bgImage.image), x = 0, depth = bgImage.depth })
     end
 
     local targetImage = love.graphics.newImage(config.target.sprite)
@@ -105,15 +95,18 @@ function love.update(dt)
 
     -- Update background images
     for _, bgImage in ipairs(backgroundImages) do
-        bgImage.x = bgImage.x - target._velocity.x * dt / bgImage.depth
+        bgImage.x = -target.position.x / bgImage.depth
     end
 end
 
 -- Draw function in the LÖVE frameworks
 function love.draw()
-    -- Draw background images
+    -- Draw background images, the depth is used to determine the speed of the background
     for _, bgImage in ipairs(backgroundImages) do
-        love.graphics.draw(bgImage.image, bgImage.x, 0, 0, love.graphics.getWidth() * 1.5 / bgImage.image:getWidth(),
+        love.graphics.draw(bgImage.image,
+            bgImage.x,
+            0, 0,
+            love.graphics.getWidth() * (1 + (config.window.scaleX - 1) / bgImage.depth) / bgImage.image:getWidth(),
             love.graphics.getHeight() / bgImage.image:getHeight())
     end
 

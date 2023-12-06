@@ -70,16 +70,25 @@ local cfg = {
         fontSize = 13                               -- The font size used by the UI
     },
     window = {
-        width = 1400,                      -- The width of the window
-        height = 900,                      -- The height of the window
-        icon = "assets/images/rocket.png", -- The icon of the window
-        mouseVisible = true,               -- Whether the mouse is visible or not
-        resizable = true,                  -- Whether the window is resizable or not
-        vsync = false,                     -- Whether vsync is enabled or not
-        backgroundImages = { "assets/images/bg/1.png",
-            "assets/images/bg/2.png",
-            "assets/images/bg/3.png",
-            "assets/images/bg/4.png", } -- The background image of the window
+        title = "Rocket simulator",                                              -- The title of the window
+        fullscreen = false,                                                       -- Whether the window is fullscreen or not
+        width = 1400,                                                            -- The width of the window
+        height = 900,                                                            -- The height of the window
+        icon = "assets/images/rocket.png",                                       -- The icon of the window
+        mouseVisible = true,                                                     -- Whether the mouse is visible or not
+        resizable = true,                                                        -- Whether the window is resizable or not
+        vsync = false,                                                           -- Whether vsync is enabled or not
+        backgroundImages = { { image = "assets/images/bg/Sky.png", depth = 30 }, -- The background images of the window
+            { image = "assets/images/bg/Sky Gradient.png", depth = 30 },         -- The background images of the window
+            { image = "assets/images/bg/Clouds.png",       depth = 18 },         -- The background images of the window
+            { image = "assets/images/bg/Hills 5.png",      depth = 14 },         -- The background images of the window
+            { image = "assets/images/bg/Hills 4.png",      depth = 12 },         -- The background image of the window
+            { image = "assets/images/bg/Hills 3.png",      depth = 10 },         -- The background images of the window
+            { image = "assets/images/bg/Hills 2.png",      depth = 8 },          -- The background images of the window
+            { image = "assets/images/bg/Hills 1.png",      depth = 7 },          -- The background images of the window
+            { image = "assets/images/bg/Trees.png",        depth = 7 }           -- The background images of the window
+        },
+        scaleX = 2.0                                                             -- The scale of the window on the x axis
     },
     controls = {
         accelerate = "w",          -- The key used to accelerate
