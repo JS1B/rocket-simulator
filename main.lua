@@ -67,6 +67,9 @@ function love.load()
     missiles = { Missile:new(config.missile) }
     missiles[1]:load(missileImage, missileSpriteBatch, missileParticleSystem)
     ui = UI:new(config.ui)
+
+    -- Request attention once loaded
+    love.window.requestAttention(false)
 end
 
 -- Update function in the LÖVE framework
