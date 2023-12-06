@@ -24,10 +24,13 @@ function love.load()
     love.window.setIcon(love.image.newImageData(config.window.icon))
 
     -- Load background images
-    for _, bgImage in ipairs(config.window.backgroundImages) do
-        table.insert(backgroundImages, { image = love.graphics.newImage(bgImage.image), x = 0, depth = bgImage.depth })
+    for _, bgImageData in ipairs(config.window.backgroundImages) do
+        local bgImage = love.graphics.newImage(bgImageData.image)
+        bgImage:setFilter("linear", "linear")
+        table.insert(backgroundImages, { image = bgImage, x = 0, depth = bgImageData.depth, scaleX = nil, scaleY = nil}) -- Add background image to the list
     end
 
+    -- Load sprites and particle systems
     local targetImage = love.graphics.newImage(config.target.sprite)
     local tagetSpriteBatch = love.graphics.newSpriteBatch(targetImage)
     local missileImage = love.graphics.newImage(config.missile.sprite)
@@ -68,6 +71,9 @@ function love.load()
     missiles[1]:load(missileImage, missileSpriteBatch, missileParticleSystem)
     ui = UI:new(config.ui)
 
+    -- Resize background images
+    love.resize(love.graphics.getDimensions()) -- Resize background images to fit the window
+
     -- Request attention once loaded
     love.window.requestAttention(false)
 end
@@ -106,11 +112,7 @@ end
 function love.draw()
     -- Draw background images, the depth is used to determine the speed of the background
     for _, bgImage in ipairs(backgroundImages) do
-        love.graphics.draw(bgImage.image,
-            bgImage.x,
-            0, 0,
-            love.graphics.getWidth() * (1 + (config.window.scaleX - 1) / bgImage.depth) / bgImage.image:getWidth(),
-            love.graphics.getHeight() / bgImage.image:getHeight())
+        love.graphics.draw(bgImage.image, bgImage.x, 0, 0, bgImage.scaleX, bgImage.scaleY)
     end
 
     -- Draw target and missiles
@@ -146,5 +148,11 @@ function love.keypressed(key)
 end
 
 function love.resize(width, height)
+    -- Resize background images
+    for _, bgImageData in ipairs(backgroundImages) do
+        bgImageData.scaleX = love.graphics.getWidth() * (1 + (config.window.scaleX - 1) / bgImageData.depth) / bgImageData.image:getWidth()
+        bgImageData.scaleY = love.graphics.getHeight() / bgImageData.image:getHeight()
+    end
+
     ui:resize(width, height)
 end
