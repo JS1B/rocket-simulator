@@ -4,6 +4,15 @@ local function map(value, inMin, inMax, outMin, outMax)
   return (1 - t) * outMin + t * outMax
 end
 
+local function sum(t)
+  local sum = 0
+  for _, v in pairs(t) do
+      sum = sum + v
+  end
+  return sum
+end
+
 return {
-  map = map
+  map = map,
+  sum = sum
 }

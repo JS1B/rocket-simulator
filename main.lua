@@ -1,13 +1,16 @@
 local Target
 local Missile
+local Collectible
 local UI
 local config
 local backgroundImages = {}
+local utils = require("utils")
 
 -- Load function in the LÖVE framework
 function love.load()
     Target = require("target")
     Missile = require("missile")
+    Collectible = require("collectible")
     UI = require("suitUI")
     config = require("default-config")
 
@@ -27,15 +30,12 @@ function love.load()
     for _, bgImageData in ipairs(config.window.backgroundImages) do
         local bgImage = love.graphics.newImage(bgImageData.image)
         bgImage:setFilter("linear", "linear")
-        table.insert(backgroundImages, { image = bgImage, x = 0, depth = bgImageData.depth, scaleX = nil, scaleY = nil}) -- Add background image to the list
+        table.insert(backgroundImages, { image = bgImage, x = 0, depth = bgImageData.depth, scaleX = nil, scaleY = nil }) -- Add background image to the list
     end
 
     -- Load sprites and particle systems
-    local targetImage = love.graphics.newImage(config.target.sprite)
-    local tagetSpriteBatch = love.graphics.newSpriteBatch(targetImage)
     local missileImage = love.graphics.newImage(config.missile.sprite)
     local missileSpriteBatch = love.graphics.newSpriteBatch(missileImage)
-
     local missileParticleImage = love.graphics.newImage(config.missile.particle.image)
     local missileParticleSystem = love.graphics.newParticleSystem(missileParticleImage, config.missile.particle.count)
     missileParticleSystem:setParticleLifetime(config.missile.particle.avgLifetime)
@@ -57,6 +57,8 @@ function love.load()
         end
     end
 
+    local targetImage = love.graphics.newImage(config.target.sprite)
+    local tagetSpriteBatch = love.graphics.newSpriteBatch(targetImage)
     local targetParticleSystem = love.graphics.newParticleSystem(targetParticleImage, config.target.particle.count)
     targetParticleSystem:setParticleLifetime(config.target.particle.lifetime)
     targetParticleSystem:setSizes(config.target.particle.size)
@@ -64,15 +66,36 @@ function love.load()
     targetParticleSystem:setEmissionRate(config.target.particle.emissionRate)
     targetParticleSystem:setQuads(targetParticleImages)
 
+    local collectibleImage = love.graphics.newImage(config.collectible.sprite)
+    local collectibleSpriteBatch = love.graphics.newSpriteBatch(collectibleImage)
+    local collectibleQuads = {}
+    for yy = 1, #config.collectible.quadsNumber do
+        for xx = 1, config.collectible.quadsNumber[yy] do
+            table.insert(collectibleQuads,
+                love.graphics.newQuad((xx - 1) * config.collectible.width,
+                    (yy - 1 )* config.collectible.height,
+                    config.collectible.width,
+                    config.collectible.height,
+                    collectibleImage:getDimensions()))
+        end
+        if #collectibleQuads >= utils.sum(config.collectible.quadsNumber) then
+            break
+        end
+    end
+
     -- Create new instances
     target = Target:new(config.target)
     target:load(targetImage, tagetSpriteBatch, targetParticleSystem)
     missiles = { Missile:new(config.missile) }
     missiles[1]:load(missileImage, missileSpriteBatch, missileParticleSystem)
+    collectible = Collectible:new(config.collectible)
+    collectible:load(collectibleSpriteBatch, collectibleQuads)
     ui = UI:new(config.ui)
 
-    -- Resize background images
-    love.resize(love.graphics.getDimensions()) -- Resize background images to fit the window
+    -- Resize elements
+    love.resize(love.graphics.getDimensions())
+
+    collectible:reset()
 
     -- Request attention once loaded
     love.window.requestAttention(false)
@@ -100,7 +123,9 @@ function love.update(dt)
     for _, missile in pairs(missiles) do
         missile:update(dt, target)
     end
-    ui:update(dt, target, missiles)
+
+    collectible:update(dt, target.position, target.size)
+    ui:update(dt, target, missiles, collectible)
 
     -- Update background images
     for _, bgImage in ipairs(backgroundImages) do
@@ -114,6 +139,8 @@ function love.draw()
     for _, bgImage in ipairs(backgroundImages) do
         love.graphics.draw(bgImage.image, bgImage.x, 0, 0, bgImage.scaleX, bgImage.scaleY)
     end
+
+    collectible:draw()
 
     -- Draw target and missiles
     target:draw()
@@ -131,6 +158,7 @@ function love.keypressed(key)
     end
     if key == config.controls.reset then
         local windowWidth, windowHeight = love.graphics.getDimensions()
+        collectible:reset()
         target:reset(windowWidth, windowHeight)
         for _, missile in pairs(missiles) do
             missile:reset(windowWidth, windowHeight)
@@ -150,9 +178,11 @@ end
 function love.resize(width, height)
     -- Resize background images
     for _, bgImageData in ipairs(backgroundImages) do
-        bgImageData.scaleX = love.graphics.getWidth() * (1 + (config.window.scaleX - 1) / bgImageData.depth) / bgImageData.image:getWidth()
+        bgImageData.scaleX = love.graphics.getWidth() * (1 + (config.window.scaleX - 1) / bgImageData.depth) /
+        bgImageData.image:getWidth()
         bgImageData.scaleY = love.graphics.getHeight() / bgImageData.image:getHeight()
     end
 
+    collectible:resize(width, height)
     ui:resize(width, height)
 end

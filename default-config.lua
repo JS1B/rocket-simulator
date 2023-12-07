@@ -64,6 +64,13 @@ local cfg = {
             damping = 0.8                      -- The damping of the particle system
         }
     },
+    collectible = {
+        sprite = "assets/images/coin.png", -- The sprite of the collectible
+        quadsNumber = { 6 },               -- The number of quads in the sprite per row
+        animationSpeed = 20,              -- The speed of the animation per second
+        width = 36,                        -- The width of the collectible
+        height = 40                        -- The height of the collectible
+    },
     ui = {
         width = 160,                                -- The width of the UI
         font = "assets/fonts/NotoSans-Regular.ttf", -- The font used by the UI
@@ -71,7 +78,7 @@ local cfg = {
     },
     window = {
         title = "Rocket simulator",                                              -- The title of the window
-        fullscreen = false,                                                       -- Whether the window is fullscreen or not
+        fullscreen = false,                                                      -- Whether the window is fullscreen or not
         width = 1400,                                                            -- The width of the window
         height = 900,                                                            -- The height of the window
         icon = "assets/images/rocket.png",                                       -- The icon of the window

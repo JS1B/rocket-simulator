@@ -13,10 +13,12 @@ function SuitUI:new(config)
     return self
 end
 
-function SuitUI:update(dt, target, missiles)
+function SuitUI:update(dt, target, missiles, collectible)
     self.suit.layout:reset(love.graphics.getWidth() - self.UI_width, 60, 2)
     self:displayTargetInfo(target)
     self:displayMissileInfo(missiles)
+    self:displayCollectibleInfo(collectible)
+
     self:displayFPS()
 end
 
@@ -40,6 +42,14 @@ function SuitUI:displayMissileInfo(missiles)
         self.suit.Label(buf, { align = "left" }, self.suit.layout:row())
         self.suit.Label(("speed: %7.1f"):format(missile.speed), { align = "left" }, self.suit.layout:row())
     end
+end
+
+function SuitUI:displayCollectibleInfo(collectible)
+    self.suit.Label("Collectible Info:", { align = "left" },
+        self.suit.layout:row(self.UI_width, love.graphics.getFont():getHeight()))
+    local buf = ("x: %7.1f\ty: %7.1f"):format(collectible.position.x, collectible.position.y)
+    self.suit.Label(buf, { align = "left" }, self.suit.layout:row())
+    self.suit.Label(("score: %d"):format(collectible.score), { align = "left" }, self.suit.layout:row())
 end
 
 function SuitUI:displayFPS()
