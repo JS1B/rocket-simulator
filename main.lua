@@ -51,20 +51,10 @@ function love.load()
         config.explosion.quadsTiles)
 
     local targetParticleImage = love.graphics.newImage(config.target.particle.image)
-    local targetParticleImages = {}
-    for yy = 0, 2 do
-        for xx = 0, 2 do
-            table.insert(targetParticleImages,
-                love.graphics.newQuad(xx * config.target.particle.textureWidth + 1,
-                    yy * config.target.particle.textureHeight + 1,
-                    config.target.particle.textureWidth,
-                    config.target.particle.textureHeight,
-                    targetParticleImage:getDimensions()))
-        end
-        if #targetParticleImages >= config.target.particle.textureCount then
-            break
-        end
-    end
+    local targetParticleQuadWidth = targetParticleImage:getWidth() / config.target.particle.quadsTiles[1]
+    local targetParticleQuadHeight = targetParticleImage:getHeight() / #config.target.particle.quadsTiles
+    local targetParticleImages = utils.loadQuads(targetParticleImage, targetParticleQuadWidth,
+        targetParticleQuadHeight, config.target.particle.quadsTiles)
 
     local targetImage = love.graphics.newImage(config.target.sprite)
     local tagetSpriteBatch = love.graphics.newSpriteBatch(targetImage)

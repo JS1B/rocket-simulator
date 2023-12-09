@@ -60,9 +60,7 @@ local cfg = {
 
         particle = {
             image = "assets/images/smoke.png", -- The images of the particle animation
-            textureWidth = 30,                 -- The width of the particle image
-            textureHeight = 30,                -- The height of the particle image
-            textureCount = 7,                  -- The number of images in the particle animation
+            quadsTiles = { 3, 3, 1 },          -- The number of images in the particle animation
             size = 0.5,                        -- The size of the particle
             spread = math.rad(10),             -- The spread of the particle (in radians)
             spreadOffset = math.rad(45),       -- The spread offset of the particle (in radians)
