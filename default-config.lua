@@ -56,6 +56,8 @@ local cfg = {
 
         turnSpeed = 2,                      -- The turning speed of the target
 
+        lives = 3,                          -- The number of lives of the target
+
         particle = {
             image = "assets/images/smoke.png", -- The images of the particle animation
             textureWidth = 30,                 -- The width of the particle image

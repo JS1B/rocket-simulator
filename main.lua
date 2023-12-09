@@ -125,6 +125,7 @@ function love.update(dt)
         if utils.checkCollision(target, missile) then
             explosionFactory:startExplosion(target.position)
             target:reset(love.graphics.getDimensions())
+            target:hit()
             missile:reset(love.graphics.getDimensions())
         end
     end

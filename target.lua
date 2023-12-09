@@ -23,6 +23,8 @@ function Target:new(config)
     self.particleSystem = nil
     self.particle = config.particle
 
+    self.lives = config.lives
+
     -- Private variables
     self._velocity = { x = 0, y = 0 }
     return self
@@ -102,6 +104,10 @@ function Target:reset(ScreenWidth, ScreenHeight)
     if self.speed > self.maxSpeed / 10 then
         self.speed = self.maxSpeed / 10
     end
+end
+
+function Target:hit()
+    self.lives = self.lives - 1
 end
 
 return Target

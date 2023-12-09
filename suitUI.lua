@@ -31,6 +31,7 @@ function SuitUI:displayTargetInfo(target)
     self.suit.Label(buf, { align = "left" }, self.suit.layout:row())
     buf = ("angle: %4.2f\tsp: %4.2f"):format(target.angle, target.speed)
     self.suit.Label(buf, { align = "left" }, self.suit.layout:row())
+    self.suit.Label(("lives: %d"):format(target.lives), { align = "left" }, self.suit.layout:row())
 end
 
 function SuitUI:displayMissileInfo(missiles)
