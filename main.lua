@@ -68,20 +68,9 @@ function love.load()
 
     local collectibleImage = love.graphics.newImage(config.collectible.sprite)
     local collectibleSpriteBatch = love.graphics.newSpriteBatch(collectibleImage)
-    local collectibleQuads = {}
-    for yy = 1, #config.collectible.quadsNumber do
-        for xx = 1, config.collectible.quadsNumber[yy] do
-            table.insert(collectibleQuads,
-                love.graphics.newQuad((xx - 1) * config.collectible.width,
-                    (yy - 1 )* config.collectible.height,
-                    config.collectible.width,
-                    config.collectible.height,
-                    collectibleImage:getDimensions()))
-        end
-        if #collectibleQuads >= utils.sum(config.collectible.quadsNumber) then
-            break
-        end
-    end
+    local w = collectibleImage:getWidth() / config.collectible.quadsTiles[1]
+    local h = collectibleImage:getHeight() / #config.collectible.quadsTiles
+    local collectibleQuads = utils.loadQuads(collectibleImage, w, h, config.collectible.quadsTiles)
 
     -- Create new instances
     target = Target:new(config.target)
@@ -89,7 +78,7 @@ function love.load()
     missiles = { Missile:new(config.missile) }
     missiles[1]:load(missileImage, missileSpriteBatch, missileParticleSystem)
     collectible = Collectible:new(config.collectible)
-    collectible:load(collectibleSpriteBatch, collectibleQuads)
+    collectible:load(collectibleSpriteBatch, collectibleQuads, { width = w, height = h })
     ui = UI:new(config.ui)
 
     -- Resize elements
@@ -124,7 +113,12 @@ function love.update(dt)
         missile:update(dt, target)
     end
 
-    collectible:update(dt, target.position, target.size)
+    if utils.checkCollision(target, collectible) then
+        collectible:reset()
+        collectible:addScore(1)
+    end
+
+    collectible:update(dt)
     ui:update(dt, target, missiles, collectible)
 
     -- Update background images

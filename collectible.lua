@@ -8,7 +8,7 @@ function Collectible:new(config)
 
     self.windowSize = { width = nil, height = nil }
     self.position = { x = 0, y = 0 }
-    self.size = { width = config.width, height = config.height }
+    self.size = { width = nil, height = nil }
     self.animationSpeed = config.animationSpeed
 
     self.spriteBatch = nil
@@ -23,12 +23,14 @@ function Collectible:new(config)
 end
 
 -- Load assets for the Collectible class
-function Collectible:load(spriteBatch, spriteQuads)
+function Collectible:load(spriteBatch, spriteQuads, size)
     -- Load the Collectible's sprite
     self.spriteBatch = spriteBatch
     self.spriteBatch:getTexture():setFilter("nearest", "nearest")
 
     self.spriteQuads = spriteQuads
+    self.size.width = size.width
+    self.size.height = size.height
 end
 
 -- Draw method for the Collectible class
@@ -44,19 +46,10 @@ function Collectible:draw()
 end
 
 -- Update method for the Collectible class
-function Collectible:update(dt, position, size)
+function Collectible:update(dt)
     self.currentQuadIdx = self.currentQuadIdx + dt * self.animationSpeed
     if self.currentQuadIdx > #self.spriteQuads + 1 then
         self.currentQuadIdx = 1
-    end
-
-    -- Update the Collectible's collision
-    if self.position.x - self.size.width / 2 < position.x + size.width / 2 and
-        self.position.x + self.size.width / 2 > position.x - size.width / 2 and
-        self.position.y - self.size.height / 2 < position.y + size.height / 2 and
-        self.position.y + self.size.height / 2 > position.y - size.height / 2 then
-        self:reset()
-        self:addScore(1)
     end
 end
 

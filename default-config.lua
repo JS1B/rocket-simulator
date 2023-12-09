@@ -66,10 +66,8 @@ local cfg = {
     },
     collectible = {
         sprite = "assets/images/coin.png", -- The sprite of the collectible
-        quadsNumber = { 6 },               -- The number of quads in the sprite per row
-        animationSpeed = 20,              -- The speed of the animation per second
-        width = 36,                        -- The width of the collectible
-        height = 40                        -- The height of the collectible
+        quadsTiles = { 6 },                -- The number of quads in the sprite per row
+        animationSpeed = 20                -- The speed of the animation per second
     },
     ui = {
         width = 160,                                -- The width of the UI
