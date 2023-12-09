@@ -4,7 +4,7 @@
 - [x] Replace simple shapes with .png files and animated particles
 - [x] Add paralaxed background
 - [x] Add collectibles
-- [ ] Add collision with effects
+- [x] Add collision with effects
 - [ ] Add game start, lives and end
 - [ ] Add music/sound effects
 - [ ] Upload video and add link to README
