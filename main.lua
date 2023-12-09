@@ -43,6 +43,7 @@ function love.load()
     missileParticleSystem:setParticleLifetime(config.missile.particle.avgLifetime)
     missileParticleSystem:setSizes(config.missile.particle.size, 0)
 
+    -- Load explosion sprites
     local explosionImage = love.graphics.newImage(config.explosion.image)
     local explosionBatch = love.graphics.newSpriteBatch(explosionImage)
     local explosionQuadWidth = explosionImage:getWidth() / config.explosion.quadsTiles[1]
@@ -50,6 +51,7 @@ function love.load()
     local explosionQuads = utils.loadQuads(explosionImage, explosionQuadWidth, explosionQuadHeight,
         config.explosion.quadsTiles)
 
+    -- Load target sprites and particle system
     local targetParticleImage = love.graphics.newImage(config.target.particle.image)
     local targetParticleQuadWidth = targetParticleImage:getWidth() / config.target.particle.quadsTiles[1]
     local targetParticleQuadHeight = targetParticleImage:getHeight() / #config.target.particle.quadsTiles
@@ -65,11 +67,13 @@ function love.load()
     targetParticleSystem:setEmissionRate(config.target.particle.emissionRate)
     targetParticleSystem:setQuads(targetParticleImages)
 
+    -- Load collectible sprites
     local collectibleImage = love.graphics.newImage(config.collectible.sprite)
     local collectibleSpriteBatch = love.graphics.newSpriteBatch(collectibleImage)
-    local w = collectibleImage:getWidth() / config.collectible.quadsTiles[1]
-    local h = collectibleImage:getHeight() / #config.collectible.quadsTiles
-    local collectibleQuads = utils.loadQuads(collectibleImage, w, h, config.collectible.quadsTiles)
+    local collectibleQuadWidth = collectibleImage:getWidth() / config.collectible.quadsTiles[1]
+    local collectibleQuadHeight = collectibleImage:getHeight() / #config.collectible.quadsTiles
+    local collectibleQuads = utils.loadQuads(collectibleImage, collectibleQuadWidth, collectibleQuadHeight,
+        config.collectible.quadsTiles)
 
     -- Create new instances
     target = Target:new(config.target)
@@ -79,7 +83,7 @@ function love.load()
     collectible = Collectible:new(config.collectible)
     explosionFactory = ExplosionFactory:new(config.explosion)
     explosionFactory:load(explosionBatch, explosionQuads)
-    collectible:load(collectibleSpriteBatch, collectibleQuads, { width = w, height = h })
+    collectible:load(collectibleSpriteBatch, collectibleQuads, { width = collectibleQuadWidth, height = collectibleQuadHeight })
     ui = UI:new(config.ui)
 
     -- Resize elements
