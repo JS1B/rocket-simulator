@@ -1,6 +1,7 @@
 local Target
 local Missile
 local Collectible
+local ExplosionFactory
 local UI
 local config
 local backgroundImages = {}
@@ -11,6 +12,7 @@ function love.load()
     Target = require("target")
     Missile = require("missile")
     Collectible = require("collectible")
+    ExplosionFactory = require("explosionFactory")
     UI = require("suitUI")
     config = require("default-config")
 
@@ -40,6 +42,13 @@ function love.load()
     local missileParticleSystem = love.graphics.newParticleSystem(missileParticleImage, config.missile.particle.count)
     missileParticleSystem:setParticleLifetime(config.missile.particle.avgLifetime)
     missileParticleSystem:setSizes(config.missile.particle.size, 0)
+
+    local explosionImage = love.graphics.newImage(config.explosion.image)
+    local explosionBatch = love.graphics.newSpriteBatch(explosionImage)
+    local explosionQuadWidth = explosionImage:getWidth() / config.explosion.quadsTiles[1]
+    local explosionQuadHeight = explosionImage:getHeight() / #config.explosion.quadsTiles
+    local explosionQuads = utils.loadQuads(explosionImage, explosionQuadWidth, explosionQuadHeight,
+        config.explosion.quadsTiles)
 
     local targetParticleImage = love.graphics.newImage(config.target.particle.image)
     local targetParticleImages = {}
@@ -78,6 +87,8 @@ function love.load()
     missiles = { Missile:new(config.missile) }
     missiles[1]:load(missileImage, missileSpriteBatch, missileParticleSystem)
     collectible = Collectible:new(config.collectible)
+    explosionFactory = ExplosionFactory:new(config.explosion)
+    explosionFactory:load(explosionBatch, explosionQuads)
     collectible:load(collectibleSpriteBatch, collectibleQuads, { width = w, height = h })
     ui = UI:new(config.ui)
 
@@ -111,6 +122,11 @@ function love.update(dt)
     target:update(dt)
     for _, missile in pairs(missiles) do
         missile:update(dt, target)
+        if utils.checkCollision(target, missile) then
+            explosionFactory:startExplosion(target.position)
+            target:reset(love.graphics.getDimensions())
+            missile:reset(love.graphics.getDimensions())
+        end
     end
 
     if utils.checkCollision(target, collectible) then
@@ -118,6 +134,7 @@ function love.update(dt)
         collectible:addScore(1)
     end
 
+    explosionFactory:update(dt)
     collectible:update(dt)
     ui:update(dt, target, missiles, collectible)
 
@@ -141,6 +158,7 @@ function love.draw()
     for _, missile in pairs(missiles) do
         missile:draw()
     end
+    explosionFactory:draw()
 
     ui:draw()
 end
@@ -163,17 +181,13 @@ function love.keypressed(key)
             missile:changeAlgorithm()
         end
     end
-    -- if key == "space" then
-    --     table.remove(missiles, 1) -- Comment this line to allow multiple missiles
-    --     table.insert(missiles, Missile:new(config.missile))
-    -- end
 end
 
 function love.resize(width, height)
     -- Resize background images
     for _, bgImageData in ipairs(backgroundImages) do
         bgImageData.scaleX = love.graphics.getWidth() * (1 + (config.window.scaleX - 1) / bgImageData.depth) /
-        bgImageData.image:getWidth()
+            bgImageData.image:getWidth()
         bgImageData.scaleY = love.graphics.getHeight() / bgImageData.image:getHeight()
     end
 

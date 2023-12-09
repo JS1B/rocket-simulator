@@ -97,10 +97,8 @@ end
 -- Reset method for the Target class
 function Target:reset(ScreenWidth, ScreenHeight)
     -- Reset the Target's speed
-    self.position = {
-        x = math.random(0, ScreenWidth),
-        y = math.random(0, ScreenHeight)
-    }
+    self.position.y = math.random(0, ScreenHeight)
+
     if self.speed > self.maxSpeed / 10 then
         self.speed = self.maxSpeed / 10
     end

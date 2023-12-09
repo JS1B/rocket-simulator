@@ -34,6 +34,12 @@ local cfg = {
             maxSpeedEmissionRate = 120        -- The emission rate of the particle system
         }
     },
+    explosion = {
+        image = "assets/images/explosion.png", -- The image of the particle
+        size = 0.5,                            -- The size of the particle
+        quadsTiles = { 5, 5, 5, 5 },           -- The number of quads in the sprite per row
+        animationSpeed = 20                    -- The speed of the animation per second
+    },
     target = {
         x = 10,                             -- The initial x position of the target
         y = 20,                             -- The initial y position of the target
