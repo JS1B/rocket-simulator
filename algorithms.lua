@@ -1,4 +1,4 @@
---- 
+---
 --- 'algorithms.lua' file contains a table of guidance algorithms
 ---
 --- ## Overview
@@ -6,7 +6,7 @@
 --- Each algorithm is a function that takes in the missile object, a LOS vector, the target object and the time step (dt).
 --- The function updates the missile's velocity based on the chosen guidance algorithm.
 --- ## Usage
---- ```lua_createtable
+--- ```lua
 --- local algorithms = require("algorithms")
 --- local algorithmFunction = algorithms[algorithmName]
 --- algorithmFunction(missile, LOS_vector, target, dt)
