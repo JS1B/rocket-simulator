@@ -5,7 +5,8 @@
 - [x] Add paralaxed background
 - [x] Add collectibles
 - [x] Add collision with effects
-- [ ] Add game start, lives and end
+- [x] Add game start, lives and end
+- [ ] Add scaling difficulty
 - [ ] Add music/sound effects
 - [ ] Upload video and add link to README
 - [ ] Review the course requirements
