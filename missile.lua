@@ -1,6 +1,5 @@
 local Missile = {}
 ---@diagnostic disable-next-line: deprecated
-local unpack = table.unpack or unpack
 local utils = require("utils")
 
 -- Constructor for the Missile class
@@ -30,7 +29,7 @@ function Missile:new(config)
     self.trace = {
         enabled = config.trace,
         length = config.traceLength,
-        color = { unpack(config.traceColor) }, -- Copy the table
+        color = { utils.unpack(config.traceColor) }, -- Copy the table
         frequency = config.traceFrequency,
         _lastTime = 0,
         _points = {}
@@ -142,7 +141,7 @@ function Missile:triggerPointsDraw()
 end
 
 function Missile:appendPoint()
-    table.insert(self.trace._points, { self.position.x, self.position.y, unpack(self.trace.color) })
+    table.insert(self.trace._points, { self.position.x, self.position.y, utils.unpack(self.trace.color) })
 end
 
 function Missile:changeAlgorithm()

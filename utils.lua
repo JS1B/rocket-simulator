@@ -1,9 +1,9 @@
 -- This module contains utility functions for the rocket simulator.
 
-local utils = {}
+local Utils = {}
 
 -- Copy a table
-function utils.copyTable(t)
+function Utils.copyTable(t)
     --[[
     Creates a shallow copy of a table.
     
@@ -21,7 +21,7 @@ function utils.copyTable(t)
 end
 
 -- Check if two rectangles are colliding
-function utils.checkCollision(a, b)
+function Utils.checkCollision(a, b)
     --[[
     Checks if two rectangles are colliding.
     
@@ -39,7 +39,7 @@ function utils.checkCollision(a, b)
 end
 
 -- Map a value from one range to another
-function utils.map(value, inMin, inMax, outMin, outMax)
+function Utils.map(value, inMin, inMax, outMin, outMax)
     --[[
     Maps a value from one range to another.
     
@@ -58,7 +58,7 @@ function utils.map(value, inMin, inMax, outMin, outMax)
 end
 
 -- Sum all the values in a table
-function utils.sum(t)
+function Utils.sum(t)
     --[[
     Calculates the sum of all the values in a table.
     
@@ -76,7 +76,7 @@ function utils.sum(t)
 end
 
 -- Load quads from an image
-function utils.loadQuads(image, width, height, quadTiles)
+function Utils.loadQuads(image, width, height, quadTiles)
     --[[
     Loads quads from an image.
     
@@ -99,11 +99,27 @@ function utils.loadQuads(image, width, height, quadTiles)
                     height,
                     image:getDimensions()))
         end
-        if #quads >= utils.sum(quadTiles) then
+        if #quads >= Utils.sum(quadTiles) then
             break
         end
     end
     return quads
 end
 
-return utils
+-- Unpack a table
+function Utils.unpack(t)
+    --[[
+    Unpacks a table.
+    
+    Parameters:
+        t (table): The table to be unpacked.
+    
+    Returns:
+        any: The unpacked table.
+    ]]
+---@diagnostic disable-next-line: deprecated
+    local unpack = table.unpack or unpack
+    return unpack(t)
+end
+
+return Utils
