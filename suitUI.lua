@@ -6,6 +6,7 @@ function SuitUI:new(config)
     SuitUI.__index = SuitUI
 
     self.UI_width = config.width
+    self.windowSize = { width = nil, height = nil }
 
     self.suit = require("lib/suit")
     self.font = love.graphics.newFont(config.font, config.fontSize)
@@ -14,7 +15,7 @@ function SuitUI:new(config)
 end
 
 function SuitUI:update(dt, target, missiles, collectible)
-    self.suit.layout:reset(love.graphics.getWidth() - self.UI_width, 60, 2)
+    self.suit.layout:reset(self.windowSize.width - self.UI_width, 60)
     self:displayTargetInfo(target)
     self:displayMissileInfo(missiles)
     self:displayCollectibleInfo(collectible)
@@ -57,12 +58,19 @@ function SuitUI:displayFPS()
     self.suit.Label("FPS: " .. love.timer.getFPS(), { align = "right" }, self.suit.layout:row())
 end
 
+function SuitUI:drawGameOver()
+    self.suit.layout:reset(self.windowSize.width / 2 - 50, self.windowSize.height / 2 - 50)
+    self.suit.Label("Game Over", { align = "center" }, self.suit.layout:row(100, 100))
+end
+
 function SuitUI:draw()
     self.suit.draw()
 end
 
 function SuitUI:resize(width, height)
-    self.suit.layout:reset(width - self.UI_width, 60, 2)
+    self.windowSize.width = width
+    self.windowSize.height = height
+    self.suit.layout:reset(width - self.UI_width, 60)
 end
 
 return SuitUI

@@ -6,6 +6,7 @@ local UI
 local config
 local backgroundImages = {}
 local utils = require("utils")
+local gameOver = false
 
 -- Load function in the LÖVE framework
 function love.load()
@@ -97,6 +98,11 @@ end
 
 -- Update function in the LÖVE framework
 function love.update(dt)
+    if target.lives <= 0 then
+        gameOver = true
+        return
+    end
+
     local accDirection = 0 -- No acceleration
     if love.keyboard.isDown(config.controls.decelerate) then
         accDirection = -1  -- Slow down
@@ -144,6 +150,12 @@ function love.draw()
     -- Draw background images, the depth is used to determine the speed of the background
     for _, bgImage in ipairs(backgroundImages) do
         love.graphics.draw(bgImage.image, bgImage.x, 0, 0, bgImage.scaleX, bgImage.scaleY)
+    end
+
+    if gameOver then
+        ui:drawGameOver()
+        ui:draw()
+        return
     end
 
     collectible:draw()
