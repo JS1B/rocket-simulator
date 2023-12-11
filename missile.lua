@@ -1,5 +1,4 @@
 local Missile = {}
----@diagnostic disable-next-line: deprecated
 local utils = require("utils")
 
 -- Constructor for the Missile class
