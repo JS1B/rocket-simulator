@@ -17,7 +17,6 @@ function Collectible:new(config)
 
     self.particleSystem = nil
     self.particle = config.particle
-    self.score = 0
 
     return self
 end
@@ -58,10 +57,6 @@ function Collectible:reset()
     -- Reset the Collectible's position
     self.position.x = math.random(self.size.width / 2, self.windowSize.width - self.size.width / 2)
     self.position.y = math.random(self.size.height / 2, self.windowSize.height - self.size.height / 2)
-end
-
-function Collectible:addScore(score)
-    self.score = self.score + score
 end
 
 function Collectible:resize(windowWidth, windowHeight)

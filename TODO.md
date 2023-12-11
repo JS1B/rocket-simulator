@@ -1,12 +1,12 @@
 - [ ] Program the algorithms
 - [ ] List used algorithms
-- [ ] Write tests for the program
+- [x] Write tests for the program
 - [x] Replace simple shapes with .png files and animated particles
 - [x] Add paralaxed background
 - [x] Add collectibles
 - [x] Add collision with effects
 - [x] Add game start, lives and end
-- [ ] Add scaling difficulty
+- [x] Add scaling difficulty
 - [ ] Add music/sound effects
 - [ ] Upload video and add link to README
 - [ ] Review the course requirements

@@ -1,21 +1,27 @@
 local Target
-local Missile
+local MissileController
 local Collectible
 local ExplosionFactory
 local UI
 local config
 local backgroundImages = {}
 local utils = require("utils")
-local gameOver = false
+local gameParams
 
 -- Load function in the LÖVE framework
 function love.load()
     Target = require("target")
-    Missile = require("missile")
+    MissileController = require("missileController")
     Collectible = require("collectible")
     ExplosionFactory = require("explosionFactory")
     UI = require("suitUI")
     config = require("default-config")
+    gameParams = {
+        gameOver = false,
+        difficulty = 1,
+        score = 0,
+        lives = config.game.lives
+    }
 
     -- Set the window properties
     love.graphics.setBackgroundColor(20 / 255, 20 / 255, 20 / 255, 0)
@@ -24,6 +30,8 @@ function love.load()
     love.window.setFullscreen(config.window.fullscreen)
     love.window.setVSync(config.window.vsync)
     love.mouse.setVisible(config.window.mouseVisible)
+    math.randomseed(os.time())
+    love.math.setRandomSeed(os.time())
 
     ---- Load assets ----
     -- Load window icon
@@ -79,16 +87,17 @@ function love.load()
     -- Create new instances
     target = Target:new(config.target)
     target:load(targetImage, tagetSpriteBatch, targetParticleSystem)
-    missiles = { Missile:new(config.missile) }
-    missiles[1]:load(missileImage, missileSpriteBatch, missileParticleSystem)
-    collectible = Collectible:new(config.collectible)
+    missileController = MissileController:new(config.missile, missileSpriteBatch, missileParticleSystem)
     explosionFactory = ExplosionFactory:new(config.explosion)
     explosionFactory:load(explosionBatch, explosionQuads)
+    collectible = Collectible:new(config.collectible)
     collectible:load(collectibleSpriteBatch, collectibleQuads, { width = collectibleQuadWidth, height = collectibleQuadHeight })
     ui = UI:new(config.ui)
+    ui:setDebug(config.debug)
 
     -- Resize elements
     love.resize(love.graphics.getDimensions())
+    missileController:spawnMissile(1)
 
     collectible:reset()
 
@@ -98,8 +107,7 @@ end
 
 -- Update function in the LÖVE framework
 function love.update(dt)
-    if target.lives <= 0 then
-        gameOver = true
+    if gameParams.gameOver then
         return
     end
 
@@ -120,24 +128,36 @@ function love.update(dt)
     target:turn(dt, turnDirection)
 
     target:update(dt)
-    for _, missile in pairs(missiles) do
-        missile:update(dt, target)
-        if utils.checkCollision(target, missile) then
+    explosionFactory:update(dt)
+
+    missileController:update(dt, target)
+
+    local w, h = love.graphics.getDimensions()
+    local hits = missileController:checkCollision(target)
+    for i, hit in ipairs(hits) do
+        if hit then
             explosionFactory:startExplosion(target.position)
+            missileController:reset(w, h, i)
+            gameParams.lives = gameParams.lives - 1
             target:reset(love.graphics.getDimensions())
-            target:hit()
-            missile:reset(love.graphics.getDimensions())
+            if gameParams.lives <= 0 then
+                gameParams.gameOver = true
+                return
+            end
         end
     end
 
     if utils.checkCollision(target, collectible) then
         collectible:reset()
-        collectible:addScore(1)
+        gameParams.score = gameParams.score + 1
+        if gameParams.score % 3 == 0 then
+            gameParams.difficulty = gameParams.difficulty + 1
+            missileController:spawnMissile(2^gameParams.difficulty)
+        end
     end
 
-    explosionFactory:update(dt)
     collectible:update(dt)
-    ui:update(dt, target, missiles, collectible)
+    ui:update(dt, target, missileController.missiles, collectible, gameParams)
 
     -- Update background images
     for _, bgImage in ipairs(backgroundImages) do
@@ -152,7 +172,7 @@ function love.draw()
         love.graphics.draw(bgImage.image, bgImage.x, 0, 0, bgImage.scaleX, bgImage.scaleY)
     end
 
-    if gameOver then
+    if gameParams.gameOver then
         ui:drawGameOver()
         ui:draw()
         return
@@ -162,9 +182,7 @@ function love.draw()
 
     -- Draw target and missiles
     target:draw()
-    for _, missile in pairs(missiles) do
-        missile:draw()
-    end
+    missileController:draw()
     explosionFactory:draw()
 
     ui:draw()
@@ -179,14 +197,10 @@ function love.keypressed(key)
         local windowWidth, windowHeight = love.graphics.getDimensions()
         collectible:reset()
         target:reset(windowWidth, windowHeight)
-        for _, missile in pairs(missiles) do
-            missile:reset(windowWidth, windowHeight)
-        end
+        missileController:reset(windowWidth, windowHeight)
     end
     if key == config.controls.changeAlgorithm then
-        for _, missile in pairs(missiles) do
-            missile:changeAlgorithm()
-        end
+        missileController:changeAlgorithm()
     end
 end
 
@@ -198,6 +212,7 @@ function love.resize(width, height)
         bgImageData.scaleY = love.graphics.getHeight() / bgImageData.image:getHeight()
     end
 
+    missileController:resize(width, height)
     collectible:resize(width, height)
     ui:resize(width, height)
 end

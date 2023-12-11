@@ -8,22 +8,32 @@ function SuitUI:new(config)
     self.UI_width = config.width
     self.windowSize = { width = nil, height = nil }
 
+    self.debug = false
+
     self.suit = require("lib/suit")
     self.font = love.graphics.newFont(config.font, config.fontSize)
     love.graphics.setFont(self.font)
     return self
 end
 
-function SuitUI:update(dt, target, missiles, collectible)
+function SuitUI:update(dt, target, missiles, collectible, gameProps)
     self.suit.layout:reset(self.windowSize.width - self.UI_width, 60)
     self:displayTargetInfo(target)
     self:displayMissileInfo(missiles)
     self:displayCollectibleInfo(collectible)
+    self:displayGameProps(gameProps)
 
     self:displayFPS()
 end
 
+function SuitUI:setDebug(enable)
+    self.debug = enable
+end
+
 function SuitUI:displayTargetInfo(target)
+    if not self.debug then
+        return
+    end
     self.suit.Label("Target Info:", { align = "left" },
         self.suit.layout:row(self.UI_width, love.graphics.getFont():getHeight()))
     local buf = ("x: %7.1f\ty: %7.1f"):format(target.position.x, target.position.y)
@@ -32,10 +42,12 @@ function SuitUI:displayTargetInfo(target)
     self.suit.Label(buf, { align = "left" }, self.suit.layout:row())
     buf = ("angle: %4.2f\tsp: %4.2f"):format(target.angle, target.speed)
     self.suit.Label(buf, { align = "left" }, self.suit.layout:row())
-    self.suit.Label(("lives: %d"):format(target.lives), { align = "left" }, self.suit.layout:row())
 end
 
 function SuitUI:displayMissileInfo(missiles)
+    if not self.debug then
+        return
+    end
     for i, missile in ipairs(missiles) do
         self.suit.Label(("Missile %d - %s"):format(i, missile.algorithm), { align = "left" }, self.suit.layout:row())
         local buf = ("x: %7.1f\ty: %7.1f"):format(missile.position.x, missile.position.y)
@@ -47,11 +59,21 @@ function SuitUI:displayMissileInfo(missiles)
 end
 
 function SuitUI:displayCollectibleInfo(collectible)
+    if not self.debug then
+        return
+    end
     self.suit.Label("Collectible Info:", { align = "left" },
         self.suit.layout:row(self.UI_width, love.graphics.getFont():getHeight()))
     local buf = ("x: %7.1f\ty: %7.1f"):format(collectible.position.x, collectible.position.y)
     self.suit.Label(buf, { align = "left" }, self.suit.layout:row())
-    self.suit.Label(("score: %d"):format(collectible.score), { align = "left" }, self.suit.layout:row())
+end
+
+function SuitUI:displayGameProps(gameProps)
+    self.suit.Label("Game Properties:", { align = "left" },
+        self.suit.layout:row(self.UI_width, love.graphics.getFont():getHeight()))
+    self.suit.Label(("lives: %d"):format(gameProps.lives), { align = "left" }, self.suit.layout:row())
+    self.suit.Label(("score: %d"):format(gameProps.score), { align = "left" }, self.suit.layout:row())
+    self.suit.Label(("difficulty: %d"):format(gameProps.difficulty), { align = "left" }, self.suit.layout:row())
 end
 
 function SuitUI:displayFPS()

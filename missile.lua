@@ -9,7 +9,7 @@ function Missile:new(config)
 
     self.position = { x = config.x, y = config.y }
     self.size = { width = config.width, height = config.height }
-    self.spriteImage = nil
+
     self.spriteBatch = nil
     self.spriteRotation = config.spriteRotation
 
@@ -46,11 +46,9 @@ function Missile:new(config)
 end
 
 -- Load assets for the Missile class
-function Missile:load(spriteImage, spriteBatch, particleSystem)
+function Missile:load(spriteBatch, particleSystem)
     -- Load the Missile's sprite
-    self.spriteImage = spriteImage
     self.spriteBatch = spriteBatch
-    self.spriteImage:setFilter("nearest", "nearest")
 
     -- Create a new particle system for the missile
     self.particleSystem = particleSystem
@@ -113,12 +111,12 @@ function Missile:draw()
 
     local x = self.position.x
     local y = self.position.y
-    local scaleX = self.size.width / self.spriteImage:getWidth()
-    local scaleY = self.size.height / self.spriteImage:getHeight()
+    local scaleX = self.size.width / self.spriteBatch:getTexture():getWidth()
+    local scaleY = self.size.height / self.spriteBatch:getTexture():getHeight()
 
     self.spriteBatch:clear()
-    self.spriteBatch:add(x, y, self.angle + self.spriteRotation, scaleX, scaleY, self.spriteImage:getWidth() / 2,
-        self.spriteImage:getHeight() * 3 / 4)
+    self.spriteBatch:add(x, y, self.angle + self.spriteRotation, scaleX, scaleY, self.spriteBatch:getTexture():getWidth() / 2,
+        self.spriteBatch:getTexture():getHeight() * 3 / 4)
     love.graphics.draw(self.spriteBatch)
 end
 

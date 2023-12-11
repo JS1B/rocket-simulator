@@ -1,5 +1,9 @@
 -- Define the movement configuration for both rocket and target
 local cfg = {
+    debug = false, -- Whether debug mode is enabled or not
+    game = {
+        lives = 3 -- The number of lives of the target
+    },
     missile = {
         x = 10,                              -- The initial x position of the rocket
         y = 300,                             -- The initial y position of the rocket
@@ -29,7 +33,7 @@ local cfg = {
             minSpeedSpread = math.rad(90),    -- The minimum speed spread of the particle (in radians)
             maxSpeedSpread = math.rad(22),    -- The maximum speed spread of the particle (in radians)
             avgLifetime = 1,                  -- The average lifetime of the particle
-            count = 400,                      -- The number of particles to emit
+            count = 5000,                     -- The number of particles to emit
             minSpeedEmissionRate = 30,        -- The emission rate of the particle system
             maxSpeedEmissionRate = 120        -- The emission rate of the particle system
         }
@@ -55,8 +59,6 @@ local cfg = {
         maxSpeed = 120,                     -- The maximum speed of the target
 
         turnSpeed = 2,                      -- The turning speed of the target
-
-        lives = 3,                          -- The number of lives of the target
 
         particle = {
             image = "assets/images/smoke.png", -- The images of the particle animation
