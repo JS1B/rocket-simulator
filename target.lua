@@ -38,7 +38,9 @@ function Target:load(spriteImage, spriteBatch, particleSystem)
     self.spriteImage:setFilter("nearest", "nearest")
 
     -- Create a new particle system for the missile
+    particleSystem:stop()
     self.particleSystem = particleSystem
+    self.particleSystem:start()
 end
 
 -- Turn method for the Target class

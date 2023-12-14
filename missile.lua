@@ -51,7 +51,9 @@ function Missile:load(spriteBatch, particleSystem)
     self.spriteBatch = spriteBatch
 
     -- Create a new particle system for the missile
-    self.particleSystem = particleSystem
+    particleSystem:stop()
+    self.particleSystem = particleSystem:clone()
+    self.particleSystem:start()
 end
 
 -- Update method for the Missile class
