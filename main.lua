@@ -5,16 +5,16 @@ local ExplosionFactory
 local UI
 local config
 local backgroundImages = {}
-local utils = require("utils")
+local utils = require("src.utils")
 local gameParams
 
 -- Load function in the LÖVE framework
 function love.load()
-    Target = require("target")
-    MissileController = require("missileController")
-    Collectible = require("collectible")
-    ExplosionFactory = require("explosionFactory")
-    UI = require("suitUI")
+    Target = require("src.target")
+    MissileController = require("src.missileController")
+    Collectible = require("src.collectible")
+    ExplosionFactory = require("src.explosionFactory")
+    UI = require("src.suitUI")
     config = require("default-config")
     gameParams = {
         gameOver = false,

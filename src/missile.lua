@@ -1,5 +1,5 @@
 local Missile = {}
-local utils = require("utils")
+local utils = require("src.utils")
 
 -- Constructor for the Missile class
 function Missile:new(config)
@@ -22,7 +22,7 @@ function Missile:new(config)
 
     self.acceleration = config.acceleration
 
-    self.algorithms = require("algorithms")
+    self.algorithms = require("src.algorithms")
     self.algorithm = config.algorithm
 
     self.trace = {

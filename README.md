@@ -61,3 +61,32 @@ return localConfig
 
 ```
 </details>
+
+File structure
+--------------
+- `lib/` - contains submodules
+  - `love/` - contains the LÖVE submodule
+  - `busted/` - contains the busted submodule - for testing
+  - `suit/` - contains the suit submodule - for UI
+- `src/` - contains the source code of the game
+  - `missile.lua` - contains the missile class
+  - `missileFactory.lua` - contains the missileFactory class
+  - `algorithms.lua` - contains the algorithms used by the missiles
+  - `target.lua` - contains the target class
+  - `collectible.lua` - contains the collectible class
+  - `suitUI.lua` - contains the UI elements
+  - `explosionFactory.lua` - contains the explosionFactory class
+  - `utils.lua` - contains the utility functions
+- `spec/` - contains the tests for the game logic
+- `assets/` - contains the assets for the game
+  - `fonts/` - contains the fonts used in the game
+  - `images/` - contains the images used in the game
+    - `bg/` - contains the background images, used for the parallax effect
+- `default-config.lua` - contains the default configuration for the game
+- `config.lua` - contains the local configuration for the game - not tracked by git
+- `main.lua` - the entry point of the game
+- `README.md` - this file
+- `TODO.md` - contains the TODO list for the project
+- `setup.sh` - contains the setup script for the project
+
+

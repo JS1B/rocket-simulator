@@ -1,6 +1,6 @@
 local MissileController = {}
-local Missile = require("missile")
-local utils = require("utils")
+local Missile = require("src.missile")
+local utils = require("src.utils")
 
 function MissileController:new(config, spriteBatch, particleSystem)
     local self = setmetatable({}, MissileController)

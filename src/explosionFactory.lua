@@ -1,5 +1,5 @@
 local ExplosionFactory = {}
-local utils = require "utils"
+local utils = require("src.utils")
 
 function ExplosionFactory:new(config)
     local self = setmetatable({}, ExplosionFactory)
