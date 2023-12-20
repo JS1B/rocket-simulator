@@ -63,6 +63,7 @@ return localConfig
 
 File structure
 --------------
+
 - `lib/` - contains submodules
   - `love/` - contains the LÖVE submodule
   - `busted/` - contains the busted submodule - for testing
@@ -81,6 +82,7 @@ File structure
   - `fonts/` - contains the fonts used in the game
   - `images/` - contains the images used in the game
     - `bg/` - contains the background images, used for the parallax effect
+- `build/` - contains the build files for the game - not tracked by git
 - `default-config.lua` - contains the default configuration for the game
 - `config.lua` - contains the local configuration for the game - not tracked by git
 - `main.lua` - the entry point of the game
