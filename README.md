@@ -17,7 +17,7 @@ This project presents a missile evasion game. In this game, the player maneuvers
 [<div align="center">
     <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="25%"/>
     </div>
-](https://www.youtube.com/)
+](https://youtu.be/jmipMoGOhUg)
 
 Running the game
 ----------------
