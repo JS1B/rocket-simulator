@@ -6,6 +6,8 @@ rocket-simulator
       - [Description](#description)
   - [Running the game](#running-the-game)
   - [Local configuration](#local-configuration)
+  - [File structure](#file-structure)
+  - [Design choices](#design-choices)
 
 #### Description
 This repo contains a final project for Harvard [**CS50x**](https://cs50.harvard.edu/x/) course.
