@@ -14,10 +14,7 @@ This repo contains a final project for Harvard [**CS50x**](https://cs50.harvard.
 This project presents a missile evasion game. In this game, the player maneuvers a target to avoid incoming rockets, which employ various prediction algorithms to anticipate the target's path. The game's objective is not only to achieve the highest score possible but also to demonstrate the advantages and disadvantages of different prediction algorithms.
 
 #### Video Demo
-[<div align="center">
-    <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" width="25%"/>
-    </div>
-](https://youtu.be/jmipMoGOhUg)
+[![link](https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg)](https://youtu.be/jmipMoGOhUg)
 
 Running the game
 ----------------
