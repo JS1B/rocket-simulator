@@ -96,8 +96,8 @@ Design choices
 - The game is structured in a way that allows for:
   - easy testing of the game logic
   - easy addition of new algorithms
-  - easy addition of new collectibles
-  - easy addition of new missiles
+  - easy addition of new collectible objects
+  - easy addition of new missile objects
   - easy addition of new UI elements
   - easy addition of new explosions for the missiles
   - easy configuration of the game parameters (e.g. missile speed, target speed, etc.) - see `default-config.lua`
