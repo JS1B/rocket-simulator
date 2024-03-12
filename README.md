@@ -20,7 +20,19 @@ Running the game
 ----------------
 
 The game is built using the LÖVE framework.
-To run it, execute the script `setup.sh`.
+To run it, execute the commands below.
+
+```bash
+# Clone the repository
+git clone
+
+# Change into the directory
+cd rocket-simulator
+
+# Run the game
+./scripts/setup.sh
+./scripts/run.sh
+```
 
 Local configuration
 -------------------
