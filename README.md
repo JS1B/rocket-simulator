@@ -19,17 +19,8 @@ This project presents a missile evasion game. In this game, the player maneuvers
 Running the game
 ----------------
 
-You need to have:
-- preinstalled C++ compiler
-- preinstalled cmake
-- [LÖVE](https://github.com/love2d/love.git)
-
-LÖVE is included as a submodule, allowing you to build and utilize it directly from the repository. Follow these steps:
-1. Clone the repo with the --recursive flag, or run `git submodule update --init --recursive` after cloning.
-2. Build it with cmake using `cmake -B build lib/love && cmake --build build`. This will create a binary file `love` in the `build` directory.
-3. Run the game with `build/love .` from the root directory of the repo.
-
-As an alternative, you can execute the `setup.sh` script to install the dependencies and build LÖVE.
+The game is built using the LÖVE framework.
+To run it, execute the script `setup.sh`.
 
 Local configuration
 -------------------
